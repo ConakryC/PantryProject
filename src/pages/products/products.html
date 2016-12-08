@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Products</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <button ion-button (click)="openBarcode()">Barcode Scanner</button>
+  
+  <p>UPC: {{upc}}</p>
+  <p [hidden]="!data.id">ID: {{data.id}}</p>
+  <p [hidden]="!data.title">Title: {{data.title}}</p>
+  <p [hidden]="!data.price">Price: {{data.price}}</p>
+  <p [hidden]="!data.badges">Badges: {{data.badges}}</p>
+  <p [hidden]="!data.servings">Servings: {{data.servings}}</p>
+  <p [hidden]="!data.numIngredients">Ingredient Count: {{data.numIngredients}}</p>
+  <img src="{{data.image}}">
+  
+</ion-content>
