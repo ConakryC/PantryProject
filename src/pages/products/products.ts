@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BarcodeScanner } from 'ionic-native';
 import { NavController } from 'ionic-angular';
 import { Http, RequestOptions, Headers } from '@angular/http';
+import { Item } from './Item';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -10,11 +11,11 @@ import 'rxjs/add/operator/map';
 })
 export class ProductsPage {
 
+    private pantryList: Item[];
 	public upc = "076808002515";
     public data:any = {};
 
   constructor(public navCtrl: NavController, public http: Http) {
-
   }
 
   openBarcode(){

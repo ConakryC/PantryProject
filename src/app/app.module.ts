@@ -5,6 +5,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { RecipesPage } from '../pages/recipes/recipes';
 import { ProductsPage } from '../pages/products/products';
 import { TabsPage } from '../pages/tabs/tabs';
+import { PantryList } from '../providers/pantry-list';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,6 @@ import { TabsPage } from '../pages/tabs/tabs';
     ProductsPage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryList]
 })
 export class AppModule {}
