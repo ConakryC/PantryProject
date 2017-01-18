@@ -1,30 +1,26 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Pantry</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Pantry</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+    <ion-grid>
+        <ion-row center>
+            <ion-col width-50><button ion-button (click)="openBarcodeScanner()">Scan Barcode</button></ion-col>
+            <ion-col width-50><button ion-button (click)="openManualSearch()">Manual Search</button></ion-col>
+        </ion-row>
+    </ion-grid>
+
     <ion-list>
-        <ion-item>
+        <button ion-item *ngFor="let item of pantryList" (click)="itemSelected(item)">
             <ion-thumbnail item-left>
-                <img src="img/thumbnail-totoro.png">
+                <img src={{item.info.images[0]}}>
             </ion-thumbnail>
-            <h2>My Neighbor Totoro</h2>
-            <p>Hayao Miyazaki • 1988</p>
-            <button ion-button clear item-right>View</button>
-        </ion-item>
+            <h2>{{item.info.title}}</h2>
+            <p>Amount: {{item.amount}}</p>
+        </button>
     </ion-list>
 
-  <button ion-button (click)="openBarcode()">Barcode Scanner</button>
-  
-  <p>UPC: {{upc}}</p>
-  <p [hidden]="!data.id">ID: {{data.id}}</p>
-  <p [hidden]="!data.title">Title: {{data.title}}</p>
-  <p [hidden]="!data.price">Price: {{data.price}}</p>
-  <p [hidden]="!data.badges">Badges: {{data.badges}}</p>
-  <p [hidden]="!data.servings">Servings: {{data.servings}}</p>
-  <p [hidden]="!data.numIngredients">Ingredient Count: {{data.numIngredients}}</p>
-  <img src="{{data.image}}">
-  
+
 </ion-content>
