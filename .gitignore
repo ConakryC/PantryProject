@@ -12,6 +12,11 @@ log.txt
 .vscode/
 npm-debug.log*
 
+*.sln
+*.jsproj
+taco.json
+.vs/
+
 .idea/
 .sass-cache/
 .tmp/
