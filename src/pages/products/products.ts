@@ -3,12 +3,13 @@ import { BarcodeScanner } from 'ionic-native';
 import { NavController } from 'ionic-angular';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-import '../../assets/scripts/spoonacular.ts';
 
 @Component({
   selector: 'page-products',
   templateUrl: 'products.html'
 })
+
+
 export class ProductsPage {
 
 	public upc = "076808002515";
@@ -22,7 +23,6 @@ export class ProductsPage {
     BarcodeScanner.scan().then((barcodeData) => {
         this.upc = barcodeData.text;
         this.search(this.upc);
-        //itemByUPC(this.upc);
     }, (err) => {
         alert("Scanning failed: " + err);
 		    this.search(this.upc);
