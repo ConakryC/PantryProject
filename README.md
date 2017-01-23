@@ -12,8 +12,8 @@ Then clone the repository and change directory into the cloned folder
 Then run the following to restore packages
 `npm install`
 
-And then run the following to restore ionic
-`ionic state restore`
+~~And then run the following to restore ionic~~
+~~`ionic state restore`~~
 
 You should be able to test now.
 You can also add which platforms you want to work with using

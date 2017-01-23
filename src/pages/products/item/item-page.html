@@ -1,0 +1,34 @@
+﻿<ion-header>
+    <ion-navbar>
+        <ion-title>
+            {{item.title}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-list no-lines inset>
+        <ion-item>
+            <ion-thumbnail item-left>
+                <img src={{item.info.images[0]}}>
+            </ion-thumbnail>
+        </ion-item>
+        <ion-item>
+            Amount: {{item.amount}}
+        </ion-item>
+        <ion-item>
+            ID: {{item.info.id}}
+        </ion-item>
+        <ion-item>
+            Price: {{item.info.price}}
+        </ion-item>
+        <ion-item text-wrap>
+            Badges: {{item.info.badges}}
+        </ion-item>
+        <ion-item>
+            Servings: {{item.info.serving_size}}
+        </ion-item>
+        <ion-item>
+            Ingredient Count: {{item.info.ingredientCount}}
+        </ion-item>
+    </ion-list>
+</ion-content>
