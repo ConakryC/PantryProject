@@ -7,6 +7,9 @@ import { ItemPage } from '../pages/products/item/item-page';
 import { ProductsPage, ModalContentPage } from '../pages/products/products';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
+import { Search } from '../providers/search';
+import { Data } from '../providers/data';
+import { RecipeDetails } from '../pages/recipe-details/recipe-details'
 
 @NgModule({
     declarations: [
@@ -16,6 +19,7 @@ import { PantryListService } from '../providers/pantry-list';
         ItemPage,
         ProductsPage,
         ModalContentPage,
+        RecipeDetails,
         TabsPage
     ],
     imports: [
@@ -29,8 +33,9 @@ import { PantryListService } from '../providers/pantry-list';
         ItemPage,
         ProductsPage,
         ModalContentPage,
+        RecipeDetails,
         TabsPage
     ],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService]
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data]
 })
 export class AppModule { }
