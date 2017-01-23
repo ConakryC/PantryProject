@@ -9,8 +9,9 @@ import { ItemPage } from './item/item-page';
     selector: 'page-products',
     templateUrl: 'products.html'
 })
-export class ProductsPage {
 
+
+export class ProductsPage {
     private pantryList: Item[];
 
     constructor(public navCtrl: NavController, public pantryService: PantryListService, public alertCtrl: AlertController, public modalCtrl: ModalController) {
@@ -103,7 +104,6 @@ export class ProductsPage {
         this.navCtrl.push(ItemPage, {item: item});
     }
 }
-
 
 @Component({
     template: `
