@@ -1,34 +1,42 @@
 ﻿<ion-header>
-    <ion-navbar>
+    <ion-navbar color="primary">
         <ion-title>
-            {{item.title}}
+            {{item.info.title}}
         </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content>
-    <ion-list no-lines inset>
+    <ion-list>
         <ion-item>
-            <ion-thumbnail item-left>
-                <img src={{item.info.images[0]}}>
-            </ion-thumbnail>
+            <img src={{item.info.images[0]}}>
         </ion-item>
         <ion-item>
-            Amount: {{item.amount}}
+            <ion-label>Ingredient ID</ion-label>
+            <ion-badge item-right>{{item.info.id}}</ion-badge>
         </ion-item>
+        <button ion-item (click)="changeAmount()">
+            <ion-label>Amount</ion-label>
+            <ion-badge item-right>{{item.amount}}</ion-badge>
+        </button>
         <ion-item>
-            ID: {{item.info.id}}
+            <ion-label>Breadcrumbs</ion-label>
+            <ion-badge item-right>{{item.info.breadcrumbs}}</ion-badge>
         </ion-item>
-        <ion-item>
-            Price: {{item.info.price}}
+        <ion-item [hidden]="!item.info.price">
+            <ion-label>Price</ion-label>
+            <ion-badge item-right>{{item.info.price}}</ion-badge>
         </ion-item>
-        <ion-item text-wrap>
-            Badges: {{item.info.badges}}
+        <ion-item [hidden]="item.info.badges.length == 0">
+            <ion-label>Badges</ion-label>
+            <p item-right text-wrap>{{item.info.badges}}</p>
         </ion-item>
-        <ion-item>
-            Servings: {{item.info.serving_size}}
+        <ion-item [hidden]="!item.info.serving_size">
+            <ion-label>Serving Size</ion-label>
+            <ion-badge item-right>{{item.info.serving_size}}</ion-badge>
         </ion-item>
-        <ion-item>
-            Ingredient Count: {{item.info.ingredientCount}}
+        <ion-item [hidden]="!item.info.ingredientCount">
+            <ion-label>Ingredient Count</ion-label>
+            <ion-badge item-right>{{item.info.ingredientCount}}</ion-badge>
         </ion-item>
     </ion-list>
 </ion-content>
