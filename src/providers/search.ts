@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { Recipe } from '../models/recipe'
 
-const apiKey = 'COpXPzpvFNmshP4Owo07PrR9rdOdp1KlFGqjsnDq2umrhMaqQh';
+const apiKey = 'FBiqUe796amshHCRsuDjukypRhO4p1C7p0FjsnURXVaA5HhxLS';
 
 @Injectable()
 export class Search {

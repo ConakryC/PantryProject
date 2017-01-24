@@ -16,7 +16,7 @@ export class PantryListService {
         this.pantryList = [];
 
         this.headers = new Headers();
-        this.headers.append('X-Mashape-Key', 'Jbst01LqSKmshsrw2kIpcSztjoCqp10lNaGjsnPR4YEgtq9zfX');
+        this.headers.append('X-Mashape-Key', 'FBiqUe796amshHCRsuDjukypRhO4p1C7p0FjsnURXVaA5HhxLS');
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json ');
 

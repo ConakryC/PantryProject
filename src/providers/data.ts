@@ -4,13 +4,13 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { RecipeData } from '../models/recipe-data';
 
-const apiKey = 'COpXPzpvFNmshP4Owo07PrR9rdOdp1KlFGqjsnDq2umrhMaqQh';
+const apiKey = 'FBiqUe796amshHCRsuDjukypRhO4p1C7p0FjsnURXVaA5HhxLS';
 
 @Injectable()
 export class Data {
 
     constructor(private http: Http) {}
-    
+
     recipeID(id: string): Observable<RecipeData> {
         let headers = new Headers();
         headers.append('X-Mashape-Key', apiKey);
