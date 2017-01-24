@@ -12,17 +12,14 @@ import { ItemPage } from './item/item-page';
 
 
 export class ProductsPage {
-    private pantryList: Item[];
 
     constructor(public navCtrl: NavController, public pantryService: PantryListService, public alertCtrl: AlertController, public modalCtrl: ModalController) {
-        //Initialize pantry list
-        this.pantryList = [];
     }
 
     public openBarcodeScanner(): void {
         BarcodeScanner.scan().then((barcodeData) => {
             this.pantryService.searchUPC(barcodeData.text).subscribe(js => {
-                this.pantryList.push(new Item(js, barcodeData.text));
+                this.pantryService.addItem(new Item(js, barcodeData.text));
             }, error => {
                 console.log("Subscribing failed after barcode search");
             });
@@ -81,7 +78,7 @@ export class ProductsPage {
                             modal.onDidDismiss(data => {
                                 if (data) {
                                     this.pantryService.getProductFromID(data.id).subscribe(js => {
-                                        this.pantryList.push(new Item(js));
+                                        this.pantryService.addItem(new Item(js));
                                     },
                                     error => {
                                         console.log("Subscribing failed modal dismiss and get product info from id");
@@ -109,7 +106,7 @@ export class ProductsPage {
     template: `
 <ion-header>
     <ion-toolbar>
-        <ion-title>
+        <ion-title color="primary">
             Manual Search
         </ion-title>
         <ion-buttons start>

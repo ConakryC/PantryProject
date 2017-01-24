@@ -2,14 +2,19 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import {Item} from '../pages/products/item/item';
 
 @Injectable()
 export class PantryListService {
 
+    public pantryList: Item[];
     private headers: Headers;
     private opt: RequestOptions;
 
     constructor(public http: Http) {
+        //Initialize pantry list
+        this.pantryList = [];
+
         this.headers = new Headers();
         this.headers.append('X-Mashape-Key', 'Jbst01LqSKmshsrw2kIpcSztjoCqp10lNaGjsnPR4YEgtq9zfX');
         this.headers.append('Content-Type', 'application/json');
@@ -35,5 +40,9 @@ export class PantryListService {
 
     getProductFromID(id: number): Observable<any> {
         return this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/" + id, this.opt).map(res => res.json());
+    }
+
+    public addItem(itemToAdd: Item): void {
+        this.pantryList.push(itemToAdd);
     }
 }

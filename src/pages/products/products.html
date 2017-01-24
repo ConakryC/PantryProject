@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color="primary">
         <ion-title>Pantry</ion-title>
     </ion-navbar>
 </ion-header>
@@ -13,10 +13,11 @@
     </ion-grid>
 
     <ion-list>
-        <button ion-item *ngFor="let item of pantryList" (click)="itemSelected(item)">
+        <button ion-item *ngFor="let item of pantryService.pantryList" (click)="itemSelected(item)">
             <ion-thumbnail item-left>
                 <img src={{item.info.images[0]}}>
             </ion-thumbnail>
+
             <h2>{{item.info.title}}</h2>
             <p>Amount: {{item.amount}}</p>
         </button>
