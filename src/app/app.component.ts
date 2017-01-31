@@ -18,7 +18,7 @@ export class MyApp {
         name: 'pantry.db',
         location: 'default'
       }).then(() => {
-        db.executeSql('CREATE TABLE IF NOT EXISTS pantry (upc INTEGER PRIMARY KEY, id INTEGER, amount INTEGER, add_date TEXT, info BLOB)', {}).then((data) => {
+        db.executeSql('CREATE TABLE IF NOT EXISTS pantry (id INTEGER PRIMARY KEY AUTOINCREMENT, upc INTEGER, spoon_id INTEGER, amount INTEGER, add_date TEXT, info TEXT)', {}).then((data) => {
           console.log('Table created: ', data);
         }, (err) => {
           console.error('Unable to execute sql: ', err);
