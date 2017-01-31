@@ -39,7 +39,8 @@ export class ItemPage {
                 {
                     text: 'Save',
                     handler: data => {
-                        this.item.amount = data.amount
+                        //this.item.amount = data.amount;
+                        this.pantryService.setAmount(this.item, data.amount);
                     }
                 }
             ]
