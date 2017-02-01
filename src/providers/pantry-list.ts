@@ -84,7 +84,8 @@ export class PantryListService {
       this.db.executeSql('SELECT * FROM pantry WHERE spoon_id = ? LIMIT 1', [itemToAdd.info.id]).then((data) => {
         if (data.rows.length > 0) {
           console.log('In DB');
-          this.updateAmount(itemToAdd, 1);
+          this.updateAmount(new Item(JSON.parse(data.rows.item(0).info), data.rows.item(0).upc,
+            data.rows.item(0).amount, data.rows.item(0).id), 1);
         }
         else {
           this.add(itemToAdd);
