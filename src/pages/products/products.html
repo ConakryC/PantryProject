@@ -1,19 +1,23 @@
 <ion-header>
-    <ion-navbar color="primary">
-        <ion-title>Pantry</ion-title>
-    </ion-navbar>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>Pantry</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row center>
+        <ion-col width-50><button ion-button (click)="openBarcodeScanner()">Scan Barcode</button></ion-col>
+        <ion-col width-50><button ion-button (click)="openManualSearch()">Manual Search</button></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-grid>
-        <ion-row center>
-            <ion-col width-50><button ion-button (click)="openBarcodeScanner()">Scan Barcode</button></ion-col>
-            <ion-col width-50><button ion-button (click)="openManualSearch()">Manual Search</button></ion-col>
-        </ion-row>
-    </ion-grid>
-
-    <ion-list>
-        <button ion-item *ngFor="let item of pantryService.pantryList" (click)="itemSelected(item)">
+  <ion-list>
+    <button ion-item *ngFor="let item of pantryService.pantryList" (click)="itemSelected(item)">
             <ion-thumbnail item-left>
                 <img src={{item.info.images[0]}}>
             </ion-thumbnail>
@@ -21,7 +25,7 @@
             <h2>{{item.info.title}}</h2>
             <p>Amount: {{item.amount}}</p>
         </button>
-    </ion-list>
+  </ion-list>
 
 
 </ion-content>

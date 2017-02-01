@@ -6,104 +6,103 @@ import { Item } from './item/item';
 import { ItemPage } from './item/item-page';
 
 @Component({
-    selector: 'page-products',
-    templateUrl: 'products.html'
+  selector: 'page-products',
+  templateUrl: 'products.html'
 })
-
-
 export class ProductsPage {
 
-    constructor(public navCtrl: NavController, public pantryService: PantryListService, public alertCtrl: AlertController, public modalCtrl: ModalController) {
-    }
+  constructor(public navCtrl: NavController, public pantryService: PantryListService, public alertCtrl: AlertController, public modalCtrl: ModalController) {
+  }
 
-    public openBarcodeScanner(): void {
-        BarcodeScanner.scan().then((barcodeData) => {
-            this.pantryService.searchUPC(barcodeData.text).subscribe(js => {
-                this.pantryService.addItem(new Item(js, barcodeData.text));
+  public openBarcodeScanner(): void {
+    BarcodeScanner.scan().then((barcodeData) => {
+      this.pantryService.searchUPC(barcodeData.text).subscribe(js => {
+        if (!(js.status && js.status == "failure"))
+          this.pantryService.addItem(new Item(js, barcodeData.text));
+      }, error => {
+        console.log("Subscribing failed after barcode search");
+      });
+    }, (err) => {
+      console.log('UPC Searching failed');
+      this.upcSearchFail();
+    });
+  }
+
+  private upcSearchFail(): void {
+    let prompt = this.alertCtrl.create({
+      title: 'UPC Search Failed',
+      message: "Could not find item from upc given. Would you like to search by typing in an item name?",
+      buttons: [
+        {
+          text: 'No',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: data => {
+            this.openManualSearch();
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  private openManualSearch(): void {
+    let prompt = this.alertCtrl.create({
+      title: 'Manual Search',
+      message: "Type in the name of the item or type of item you are looking for",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'Product Name'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel manual search');
+          }
+        },
+        {
+          text: 'Search',
+          handler: data => {
+            this.pantryService.searchName(data.name).subscribe(js => {
+              //Display modal so the user can picj between the results
+              let modal = this.modalCtrl.create(ModalContentPage, { products: js.products });
+
+              modal.onDidDismiss(data => {
+                if (data) {
+                  this.pantryService.getProductFromID(data.id).subscribe(js => {
+                    this.pantryService.addItem(new Item(js));
+                  },
+                    error => {
+                      console.log("Subscribing failed modal dismiss and get product info from id");
+                    });
+                }
+              });
+
+              modal.present();
             }, error => {
-                console.log("Subscribing failed after barcode search");
+              console.log("Subscribing failed after manual search");
             });
-        }, (err) => {
-            console.log('UPC Searching failed');
-            this.upcSearchFail();
-        });
-    }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
 
-    private upcSearchFail(): void {
-        let prompt = this.alertCtrl.create({
-            title: 'UPC Search Failed',
-            message: "Could not find item from upc given. Would you like to search by typing in an item name?",
-            buttons: [
-                {
-                    text: 'No',
-                    handler: data => {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: 'Yes',
-                    handler: data => {
-                        this.openManualSearch();
-                    }
-                }
-            ]
-        });
-        prompt.present();
-    }
-
-    private openManualSearch(): void {
-        let prompt = this.alertCtrl.create({
-            title: 'Manual Search',
-            message: "Type in the name of the item or type of item you are looking for",
-            inputs: [
-                {
-                    name: 'name',
-                    placeholder: 'Product Name'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: data => {
-                        console.log('Cancel manual search');
-                    }
-                },
-                {
-                    text: 'Search',
-                    handler: data => {
-                        this.pantryService.searchName(data.name).subscribe(js => {
-                            //Display modal so the user can picj between the results
-                            let modal = this.modalCtrl.create(ModalContentPage, { products: js.products });
-
-                            modal.onDidDismiss(data => {
-                                if (data) {
-                                    this.pantryService.getProductFromID(data.id).subscribe(js => {
-                                        this.pantryService.addItem(new Item(js));
-                                    },
-                                    error => {
-                                        console.log("Subscribing failed modal dismiss and get product info from id");
-                                    });
-                                }
-                            });
-
-                            modal.present();
-                        }, error => {
-                            console.log("Subscribing failed after manual search");
-                        });
-                    }
-                }
-            ]
-        });
-        prompt.present();
-    }
-
-    private itemSelected(item: Item): void {
-        this.navCtrl.push(ItemPage, {item: item});
-    }
+  private itemSelected(item: Item): void {
+    this.navCtrl.push(ItemPage, { item: item });
+  }
 }
 
 @Component({
-    template: `
+  template: `
 <ion-header>
     <ion-toolbar>
         <ion-title color="primary">
@@ -132,13 +131,13 @@ export class ProductsPage {
 })
 export class ModalContentPage {
 
-    private products: any;
+  private products: any;
 
-    constructor(public platform: Platform, public params: NavParams, public viewCtrl: ViewController) {
-        this.products = this.params.get('products');
-    }
+  constructor(public platform: Platform, public params: NavParams, public viewCtrl: ViewController) {
+    this.products = this.params.get('products');
+  }
 
-    dismiss(item?: any) {
-        this.viewCtrl.dismiss(item);
-    }
+  dismiss(item?: any) {
+    this.viewCtrl.dismiss(item);
+  }
 }
