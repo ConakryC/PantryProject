@@ -43,13 +43,7 @@ export class PantryListService {
      * @param upc
      */
     searchUPC(upc: string): Observable<any> {
-        // let check = this.checkUPC(upc);
-        // if (check.info != 0) {
-        //   this.updateAmount(check, 1);
-        // }
-        // else {
-        return this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/upc/" + upc, this.opt).map(res => res.json());
-        // }
+      return this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/upc/" + upc, this.opt).map(res => res.json());
     }
 
     searchName(name: string): Observable<any> {
@@ -87,47 +81,48 @@ export class PantryListService {
     }
 
     public addItem(itemToAdd: Item): void {
-      // let check = this.checkItem(itemToAdd);
-      // console.log(check.info);
-      // if (check.info != 0) {
-      //   this.updateAmount(check, 1);
-      // }
-      // else {
-      this.add(itemToAdd);
-      // }
+      this.db.executeSql('SELECT * FROM pantry WHERE spoon_id = ? LIMIT 1', [itemToAdd.info.id]).then((data) => {
+        if (data.rows.length > 0) {
+          console.log('In DB');
+          this.updateAmount(itemToAdd, 1);
+        }
+        else {
+          this.add(itemToAdd);
+        }
+      }, (err) => {
+        console.error('item check error: ', JSON.stringify(err));
+      });
     }
 
-  checkUPC(upc: string): any {
+  // checkUPC(upc: string): any {
+  //
+  //   this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
+  //     if (data.rows.length > 0) {
+  //       console.log('In DB');
+  //       new Item(JSON.parse(data.rows.item(0).info), data.rows.item(0).upc,
+  //         data.rows.item(0).amount, data.rows.item(0).id);
+  //     }
+  //     else {
+  //       new Item(0);
+  //     }
+  //   }, (err) => {
+  //     console.error('UPC check error: ', JSON.stringify(err));
+  //   });
+  // }
 
-    this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
-      if (data.rows.length > 0) {
-        console.log('In DB');
-        new Item(JSON.parse(data.rows.item(0).info), data.rows.item(0).upc,
-          data.rows.item(0).amount, data.rows.item(0).id);
-      }
-      else {
-        new Item(0);
-      }
-    }, (err) => {
-      console.error('UPC check error: ', JSON.stringify(err));
-    });
-  }
-
-  checkItem(item: Item): any {
-
-    this.db.executeSql('SELECT * FROM pantry WHERE spoon_id = ? LIMIT 1', [item.info.id]).then((data) => {
-      if (data.rows.length > 0) {
-        console.log('In DB');
-        return new Item(JSON.parse(data.rows.item(0).info), data.rows.item(0).upc,
-          data.rows.item(0).amount, data.rows.item(0).id);
-      }
-      else {
-        return new Item(0);
-      }
-    }, (err) => {
-      console.error('item check error: ', JSON.stringify(err));
-    });
-  }
+  // checkItem(item: Item): any {
+  //
+  //   this.db.executeSql('SELECT * FROM pantry WHERE spoon_id = ? LIMIT 1', [item.info.id]).then((data) => {
+  //     if (data.rows.length > 0) {
+  //       console.log('In DB');
+  //     }
+  //     else {
+  //       return new Item(0);
+  //     }
+  //   }, (err) => {
+  //     console.error('item check error: ', JSON.stringify(err));
+  //   });
+  // }
 
   setAmount(item: Item, amt: number) {
     this.db.executeSql('UPDATE pantry SET amount = ? WHERE id = ?', [amt, item.id]).then((data) => {
