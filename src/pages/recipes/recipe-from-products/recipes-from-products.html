@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Found Recipes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg">
+  <ion-card *ngFor="let recipe of recipes" (click)="viewRecipeData(recipe.id)">
+    <img src="{{recipe.image}}"/>
+
+    <ion-card-content>
+      <ion-card-title>
+        {{recipe.title}}
+      </ion-card-title>
+    </ion-card-content>
+
+    <ion-row no-padding>
+      <ion-col>
+        <ion-icon name="heart"> {{recipe.likes}}</ion-icon>
+      </ion-col>
+
+      <ion-col text-center>
+        <ion-icon name="checkbox"> {{recipe.usedIngredientCount}}</ion-icon>
+      </ion-col>
+
+      <ion-col text-right>
+        <ion-icon name="square-outline"> {{recipe.missedIngredientCount}}</ion-icon>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+</ion-content>

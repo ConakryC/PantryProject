@@ -9,17 +9,25 @@
     <ion-item>
         <img src="{{recipeData?.image}}"/>
     </ion-item>
+
     <ion-item>
       <ion-label>Recipe ID</ion-label>
       <ion-badge item-right>{{recipeData?.id}}</ion-badge>
     </ion-item>
+
     <ion-item>
       <ion-label>Ready in</ion-label>
       <ion-badge item-right>{{recipeData?.readyInMinutes}} Minutes</ion-badge>
     </ion-item>
+
     <ion-item>
       <ion-label>Instructions</ion-label>
     </ion-item>
+
+    <ion-item>
+      <button ion-button (click)="launchUrl(recipeData?.sourceUrl)">Open in browser</button>
+    </ion-item>
+
   </ion-list>
   <p>{{recipeData?.instructions}}</p>
 </ion-content>
