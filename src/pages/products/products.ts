@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { BarcodeScanner } from 'ionic-native';
-import { NavController, AlertController, ModalController, Platform, NavParams, ViewController } from 'ionic-angular';
+import { NavController, AlertController, MenuController, ModalController, Platform, NavParams, ViewController, FabContainer, Content } from 'ionic-angular';
 import { PantryListService } from '../../providers/pantry-list';
 import { Item } from './item/item';
 import { ItemPage } from './item/item-page';
@@ -11,10 +11,38 @@ import { ItemPage } from './item/item-page';
 })
 export class ProductsPage {
 
-  constructor(public navCtrl: NavController, public pantryService: PantryListService, public alertCtrl: AlertController, public modalCtrl: ModalController) {
+  showFAB: boolean;
+  @ViewChild(Content) content: Content;
+
+  constructor(public navCtrl: NavController, private changeDetectorRef: ChangeDetectorRef, public pantryService: PantryListService, public alertCtrl: AlertController, public modalCtrl: ModalController, public menuCtrl: MenuController) {
+    this.showFAB = true;
   }
 
-  public openBarcodeScanner(): void {
+  ngAfterViewInit() {
+    this.content.ionScroll.subscribe((data) => {
+      if (data.directionY == "down") {
+        this.showFAB = false;
+      } else {
+        this.showFAB = true;
+      }
+      this.changeDetectorRef.detectChanges();
+    });
+  }
+
+  public showMenu(): void {
+    this.menuCtrl.open();
+  }
+
+  private closeFAB(fab: FabContainer) {
+    fab.close();
+    console.log("Closed FAB");
+  }
+
+  public openBarcodeScanner(fab?: FabContainer): void {
+    if (fab) {
+      this.closeFAB(fab);
+    }
+
     BarcodeScanner.scan().then((barcodeData) => {
       this.pantryService.searchUPC(barcodeData.text).subscribe(js => {
         if (!(js.status && js.status == "failure"))
@@ -50,7 +78,11 @@ export class ProductsPage {
     prompt.present();
   }
 
-  private openManualSearch(): void {
+  private openManualSearch(fab?: FabContainer): void {
+    if (fab) {
+      this.closeFAB(fab);
+    }
+
     let prompt = this.alertCtrl.create({
       title: 'Manual Search',
       message: "Type in the name of the item or type of item you are looking for",
