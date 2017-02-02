@@ -28,11 +28,15 @@
 </ion-content>
 
 <ion-footer>
-  <ion-fab *ngIf="showFAB" bottom right #productFAB>
+  <ion-fab [hidden]="!showFAB" bottom right #productFAB>
     <button ion-fab color="primary">
       <ion-icon name="search"></ion-icon>
     </button>
     <ion-fab-list side="left">
+      <button ion-fab (click)="isReverse = !isReverse">
+        <ion-icon *ngIf="!isReverse" name="arrow-round-down"></ion-icon>
+        <ion-icon *ngIf="isReverse" name="arrow-round-up"></ion-icon>
+      </button>
       <button ion-fab>
         <ion-icon name="funnel"></ion-icon>
       </button>

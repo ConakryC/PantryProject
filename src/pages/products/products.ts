@@ -4,6 +4,8 @@ import { NavController, AlertController, MenuController, ModalController, Platfo
 import { PantryListService } from '../../providers/pantry-list';
 import { Item } from './item/item';
 import { ItemPage } from './item/item-page';
+import * as Enums from '../../providers/HelperEnums';
+
 
 @Component({
   selector: 'page-products',
@@ -11,10 +13,15 @@ import { ItemPage } from './item/item-page';
 })
 export class ProductsPage {
 
+  isReverse: boolean;
+  filter: Enums.FILTER;
+  sort: Enums.SORT;
+
   showFAB: boolean;
   @ViewChild(Content) content: Content;
 
   constructor(public navCtrl: NavController, private changeDetectorRef: ChangeDetectorRef, public pantryService: PantryListService, public alertCtrl: AlertController, public modalCtrl: ModalController, public menuCtrl: MenuController) {
+    this.isReverse = false;
     this.showFAB = true;
   }
 
@@ -27,6 +34,14 @@ export class ProductsPage {
       }
       this.changeDetectorRef.detectChanges();
     });
+  }
+
+  public chooseFilter() {
+    
+  }
+
+  public chooseSort() {
+
   }
 
   public showMenu(): void {

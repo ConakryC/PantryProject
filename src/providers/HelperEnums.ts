@@ -1,0 +1,16 @@
+export enum FILTER {
+  ALL,
+  GLUTEN_FREE,
+  FAVORITE,
+  UN_FAVORITE,
+  DAIRY_FREE,
+  PEANUT_FREE
+}
+
+export enum SORT {
+  NONE,
+  ALPHABETICAL,
+  AMOUNT,
+  PRICE,
+  SCORE
+}
