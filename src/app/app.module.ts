@@ -12,8 +12,9 @@ import { PantryListService } from '../providers/pantry-list';
 import { ProductHelper } from '../providers/product-helper';
 import { Search } from '../providers/search';
 import { Data } from '../providers/data';
-import { RecipeDetails } from '../pages/recipe-details/recipe-details';
 import { FilterPipe } from '../pipes/filter-pipe';
+import { RecipeDetails } from '../pages/recipes/recipe-details/recipe-details'
+import { RecipesFromProductsPage } from '../pages/recipes/recipe-from-products/recipes-from-products';
 
 @NgModule({
     declarations: [
@@ -27,8 +28,9 @@ import { FilterPipe } from '../pipes/filter-pipe';
         ProductSortPopover,
         ProductFilterPopover,
         RecipeDetails,
-        TabsPage,
         FilterPipe
+        RecipesFromProductsPage,
+        TabsPage
     ],
     imports: [
         IonicModule.forRoot(MyApp)
@@ -45,6 +47,7 @@ import { FilterPipe } from '../pipes/filter-pipe';
         ProductSortPopover,
         ProductFilterPopover,
         RecipeDetails,
+        RecipesFromProductsPage,
         TabsPage
     ],
     providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data, ProductHelper]
