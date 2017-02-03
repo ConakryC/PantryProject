@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Http, RequestOptions, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import {Item} from '../pages/products/item/item';
+import { Item } from '../pages/products/item/item';
 import { Platform } from 'ionic-angular';
 import { SQLite } from 'ionic-native';
 import * as Enums from './ordering-helper';
@@ -11,15 +11,15 @@ import * as Enums from './ordering-helper';
 export class PantryListService {
 
   /**
-      This is the list returned and displayed on the product page.
-      Not sure if we should do it in the code or via custom pipes?
+   This is the list returned and displayed on the product page.
+   Not sure if we should do it in the code or via custom pipes?
    **/
   public orderedList: Item[];
 
   /**
-     The complete list of all items the user has. There is no
-     guaranteed order of any kind on this list
-  **/
+   The complete list of all items the user has. There is no
+   guaranteed order of any kind on this list
+   **/
   public pantryList: Item[];
   private db: SQLite;
   private headers: Headers;
@@ -28,7 +28,7 @@ export class PantryListService {
   constructor(public http: Http, private platform: Platform) {
     this.platform.ready().then(() => {
       this.db = new SQLite();
-      this.db.openDatabase({ name: 'pantry.db', location: 'default' }).then(() => {
+      this.db.openDatabase({name: 'pantry.db', location: 'default'}).then(() => {
         this.load();
       }, (err) => {
         console.error('Database Error: ', err);
@@ -151,10 +151,10 @@ export class PantryListService {
   add(addItem: Item) {
     this.db.executeSql('INSERT INTO pantry (upc, spoon_id, amount, add_date, info) VALUES (?,?,?,?,?)',
       [addItem.upc, addItem.info.id, addItem.amount, new Date().getMilliseconds(), JSON.stringify(addItem.info)]).then((data) => {
-        console.log('Inserted: ', JSON.stringify(data));
-      }, (err) => {
-        console.error('DB insert error: ', JSON.stringify(err));
-      });
+      console.log('Inserted: ', JSON.stringify(data));
+    }, (err) => {
+      console.error('DB insert error: ', JSON.stringify(err));
+    });
     this.load();
   }
 
