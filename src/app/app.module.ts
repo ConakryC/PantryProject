@@ -28,7 +28,7 @@ import { RecipesFromProductsPage } from '../pages/recipes/recipe-from-products/r
         ProductSortPopover,
         ProductFilterPopover,
         RecipeDetails,
-        FilterPipe
+        FilterPipe,
         RecipesFromProductsPage,
         TabsPage
     ],
