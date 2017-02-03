@@ -1,27 +1,51 @@
-<ion-header>
-    <ion-navbar color="primary">
-        <ion-title>Pantry</ion-title>
-    </ion-navbar>
+<ion-header (click)="closeFAB(productFAB)">
+  <ion-navbar color="primary">
+    <ion-title>Pantry</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <ion-grid>
-        <ion-row center>
-            <ion-col width-50><button ion-button (click)="openBarcodeScanner()">Scan Barcode</button></ion-col>
-            <ion-col width-50><button ion-button (click)="openManualSearch()">Manual Search</button></ion-col>
-        </ion-row>
-    </ion-grid>
+<ion-content padding (click)="closeFAB(productFAB)">
+  <div *ngIf="productHelper.pantryService.pantryList.length == 0">
+    <h2>No Pantry Items Found!</h2>
+    <p>Scan or search for items using the button on the bottom</p>
+  </div>
 
-    <ion-list>
-        <button ion-item *ngFor="let item of pantryService.pantryList" (click)="itemSelected(item)">
-            <ion-thumbnail item-left>
-                <img src={{item.info.images[0]}}>
-            </ion-thumbnail>
+  <ion-list>
+    <button ion-item *ngFor="let item of productHelper.pantryService.getOrderedList(productHelper.filter, productHelper.sort)" (click)="itemSelected(item)">
+      <ion-thumbnail item-left>
+        <img src={{item.info.images[0]}}>
+      </ion-thumbnail>
 
-            <h2>{{item.info.title}}</h2>
-            <p>Amount: {{item.amount}}</p>
-        </button>
-    </ion-list>
-
-
+      <h2>{{item.info.title}}</h2>
+      <p>Amount:
+        {{item.amount}}</p>
+    </button>
+  </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-fab [hidden]="!showFAB" bottom right #productFAB>
+    <button ion-fab color="primary">
+      <ion-icon name="search"></ion-icon>
+    </button>
+    <ion-fab-list side="left">
+      <button ion-fab (click)="chooseSort(productFAB)">
+        <ion-icon name="list"></ion-icon>
+      </button>
+      <button ion-fab (click)="chooseFilter(productFAB)">
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+      <button ion-fab (click)="manualSearch(productFAB)">
+        <ion-icon name="hand"></ion-icon>
+      </button>
+      <button ion-fab (click)="scanBarcode(productFAB)">
+        <ion-icon name="barcode"></ion-icon>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-footer>

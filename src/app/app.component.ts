@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
 import { TabsPage } from '../pages/tabs/tabs';
-import {DatabaseService} from '../providers/database';
+import { DatabaseService } from '../providers/database';
+import { InAppBrowser } from 'ionic-native';
 
 @Component({
   templateUrl: 'app.html'

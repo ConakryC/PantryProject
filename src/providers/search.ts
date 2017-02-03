@@ -11,7 +11,7 @@ export class Search {
 
     constructor(private http: Http) {}
 
-    recipeByIngredients(items: string, sort: string): Observable<Recipe[]> {
+    recipeByIngredients(items: string, numItems: string, sort: string): Observable<Recipe[]> {
         let headers = new Headers();
         headers.append('X-Mashape-Key', apiKey);
         headers.append('Content-Type', 'application/json');
@@ -22,9 +22,10 @@ export class Search {
         });
 
         let ingrds= '?fillIngredients=false&ingredients=' + items;
-        let rank = '&limitLicense=false&number=3&ranking=' + sort;
+        let numIngrds = '&limitLicense=false&number=' + numItems;
+        let rank = '&ranking=' + sort;
 
         return this.http.get('https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients'
-            + ingrds + rank, reqOps).map(res => <Recipe[]>res.json())
+            + ingrds + numIngrds + rank, reqOps).map(res => <Recipe[]>res.json())
     }
 }
