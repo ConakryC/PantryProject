@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import {Item} from '../pages/products/item/item';
 import { Platform } from 'ionic-angular';
 import { SQLite } from 'ionic-native';
-import * as Enums from './HelperEnums';
+import * as Enums from './ordering-helper';
 
 @Injectable()
 export class PantryListService {
@@ -14,7 +14,7 @@ export class PantryListService {
       This is the list returned and displayed on the product page.
       Not sure if we should do it in the code or via custom pipes?
    **/
-  private orderedList: Item[];
+  public orderedList: Item[];
 
   /**
      The complete list of all items the user has. There is no
@@ -48,52 +48,87 @@ export class PantryListService {
     });
   }
 
-  public getOrderedList(filter: Enums.FILTER, sort: Enums.SORT): Item[] {
-    let items = this.pantryList;
+  public getOrderedList(filter?: Enums.Filter, sort?: Enums.Sort): Item[] {
+    //TODO: Probably do some caching here for performance
+    let sortedItems = [];
 
-    switch (filter) {
-      case Enums.FILTER.GLUTEN_FREE:
-        items.filter((item)=>{
-          //Make sure item exists
-          if(item){
-            //Check to make sure it has gluten free badge
-            //if(item.info)
+    for (let itm of this.pantryList) {
+      if (itm) {
+        if (filter) {
+          switch (filter) {
+            case Enums.Filter.Gluten_Free:
+              if (itm.info.badges && itm.info.badges.indexOf('gluten_free') > -1) {
+                sortedItems.push(itm);
+              }
+              break;
+            case Enums.Filter.Favorite:
+              break;
+            case Enums.Filter.Not_Favorite:
+              break;
+            case Enums.Filter.Dairy_Free:
+              if (itm.info.badges && itm.info.badges.indexOf('dairy_free') > -1) {
+                sortedItems.push(itm);
+              }
+              break;
+            case Enums.Filter.Peanut_Free:
+              if (itm.info.badges && itm.info.badges.indexOf('peanut_free') > -1) {
+                sortedItems.push(itm);
+              }
+              break;
+            default:
+              //Don't mess with the array if not one of the above filters
+              //Ex. ALL filter
+              sortedItems.push(itm);
+
+              break;
           }
-
-          return false;
-        });
-
-        break;
-      case Enums.FILTER.FAVORITE:
-        break;
-      case Enums.FILTER.UN_FAVORITE:
-        break;
-      case Enums.FILTER.DAIRY_FREE:
-        break;
-      case Enums.FILTER.PEANUT_FREE:
-        break;
-      default:
-        //Don't mess with the array if not one of the above filters
-        //Ex. ALL filter
-        break;
+        }
+      }
+    }
+    if (sort) {
+      switch (sort) {
+        case Enums.Sort.Alphabetical:
+          return sortedItems.sort((itemA, itemB) => {
+            if (itemA.info.title < itemB.info.title)
+              return -1;
+            else if (itemA.info.title > itemB.info.title)
+              return 1;
+            return 0;
+          });
+        case Enums.Sort.Amount:
+          return sortedItems.sort((itemA, itemB) => {
+            if (itemA.amount < itemB.amount)
+              return -1;
+            else if (itemA.amount > itemB.amount)
+              return 1;
+            return 0;
+          });
+        case Enums.Sort.Price:
+          return sortedItems.sort((itemA, itemB) => {
+            if (itemA.info.price < itemB.info.price)
+              return -1;
+            else if (itemA.info.price > itemB.info.price)
+              return 1;
+            return 0;
+          });
+        case Enums.Sort.Score:
+          return sortedItems.sort((itemA, itemB) => {
+            if (itemA.info.spoonacular_score < itemB.info.spoonacular_score)
+              return -1;
+            else if (itemA.info.spoonacular_score > itemB.info.spoonacular_score)
+              return 1;
+            return 0;
+          });
+        case Enums.Sort.Favorite:
+          break;
+        default:
+          //Don't mess with the array if not one of the above sorts
+          //Ex. NONE sort
+          break;
+      }
     }
 
-    switch (sort) {
-      case Enums.SORT.ALPHABETICAL:
-        break;
-      case Enums.SORT.AMOUNT:
-        break;
-      case Enums.SORT.PRICE:
-        break;
-      case Enums.SORT.SCORE:
-        break;
-      default:
-        //Don't mess with the array if not one of the above sorts
-        //Ex. NONE sort
-        break;
-    }
-
-    return items;
+    return sortedItems;
   }
 
   /**
@@ -140,6 +175,9 @@ export class PantryListService {
   }
 
   public addItem(itemToAdd: Item): void {
+    //TODO: Testing purposes, don't forget to remove
+    //this.pantryList.push(itemToAdd);
+
     this.db.executeSql('SELECT * FROM pantry WHERE spoon_id = ? LIMIT 1', [itemToAdd.info.id]).then((data) => {
       if (data.rows.length > 0) {
         console.log('In DB');
