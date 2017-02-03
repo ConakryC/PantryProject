@@ -19,4 +19,14 @@ export class DatabaseService {
       });
     });
   }
+
+  gCollect() {
+    let d = new Date();
+    d.setMonth(d.getMonth() - 1);
+    this.db.executeSql('DELETE FROM pantry WHERE add_date < ? AND amount < ?', [d.getMilliseconds(), 1]).then((data) => {
+      console.log('Deleting outdated items: ', JSON.stringify(data));
+    }, (err) => {
+      console.error('Database cleanup error: ', JSON.stringify(err));
+    });
+  }
 }

@@ -9,7 +9,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
 import { Search } from '../providers/search';
 import { Data } from '../providers/data';
-import { RecipeDetails } from '../pages/recipe-details/recipe-details'
+import { RecipeDetails } from '../pages/recipe-details/recipe-details';
+import {DatabaseService} from '../providers/database'
 
 @NgModule({
     declarations: [
@@ -36,6 +37,6 @@ import { RecipeDetails } from '../pages/recipe-details/recipe-details'
         RecipeDetails,
         TabsPage
     ],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data]
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data, DatabaseService]
 })
 export class AppModule { }
