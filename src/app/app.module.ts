@@ -4,11 +4,16 @@ import { MyApp } from './app.component';
 import { ProfilePage } from '../pages/profile/profile';
 import { RecipesPage } from '../pages/recipes/recipes';
 import { ItemPage } from '../pages/products/item/item-page';
-import { ProductsPage, ModalContentPage } from '../pages/products/products';
+import { ProductsPage } from '../pages/products/products';
+import { ProductPagePopover, ProductSortPopover, ProductFilterPopover } from '../pages/products/product-popovers';
+import { ModalContentPage } from '../pages/products/product-modal';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
+import { ProductHelper } from '../providers/product-helper';
 import { Search } from '../providers/search';
 import { Data } from '../providers/data';
+import { DatabaseService } from '../providers/database'
+import { FilterPipe } from '../pipes/filter-pipe';
 import { RecipeDetails } from '../pages/recipes/recipe-details/recipe-details'
 import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generated-recipes';
 
@@ -20,8 +25,16 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ItemPage,
         ProductsPage,
         ModalContentPage,
+        ProductPagePopover,
+        ProductSortPopover,
+        ProductFilterPopover,
         RecipeDetails,
+<<<<<<< HEAD
         GeneratedRecipesPage,
+=======
+        FilterPipe,
+        RecipesFromProductsPage,
+>>>>>>> origin/master
         TabsPage
     ],
     imports: [
@@ -35,10 +48,13 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ItemPage,
         ProductsPage,
         ModalContentPage,
+        ProductPagePopover,
+        ProductSortPopover,
+        ProductFilterPopover,
         RecipeDetails,
         GeneratedRecipesPage,
         TabsPage
     ],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data]
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data, ProductHelper, DatabaseService]
 })
 export class AppModule { }
