@@ -29,12 +29,8 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ProductSortPopover,
         ProductFilterPopover,
         RecipeDetails,
-<<<<<<< HEAD
         GeneratedRecipesPage,
-=======
         FilterPipe,
-        RecipesFromProductsPage,
->>>>>>> origin/master
         TabsPage
     ],
     imports: [
