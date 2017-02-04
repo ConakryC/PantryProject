@@ -16,15 +16,21 @@
 
     <ion-row no-padding>
       <ion-col>
-        <ion-icon *ngIf="recipe.likes" name="heart"> {{recipe.likes}}</ion-icon>
+        <ion-icon *ngIf="recipe.likes != NULL" name="heart">
+          {{recipe.likes}}
+          </ion-icon>
       </ion-col>
 
       <ion-col text-center>
-        <ion-icon *ngIf="recipe.usedIngredientCount" name="checkbox"> {{recipe.usedIngredientCount}}</ion-icon>
+        <ion-icon *ngIf="recipe.usedIngredientCount != NULL" name="checkbox">
+          {{recipe.usedIngredientCount}}
+          </ion-icon>
       </ion-col>
 
       <ion-col text-right>
-        <ion-icon *ngIf="recipe.missedIngredientCount" name="square-outline"> {{recipe.missedIngredientCount}}</ion-icon>
+        <ion-icon *ngIf="recipe.missedIngredientCount != NULL" name="square-outline">
+          {{recipe.missedIngredientCount}}
+          </ion-icon>
       </ion-col>
     </ion-row>
 

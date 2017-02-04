@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-list>
     <ion-item>
         <img src="{{recipeData?.image}}"/>
@@ -20,14 +20,20 @@
       <ion-badge item-right>{{recipeData?.readyInMinutes}} Minutes</ion-badge>
     </ion-item>
 
+    <ion-item *ngIf="recipeData?.instructions == NULL">
+      <button ion-button block (click)="launchUrl(recipeData?.sourceUrl)">Open in browser</button>
+    </ion-item>
+
+
     <ion-item>
-      <ion-label>Instructions</ion-label>
+      <p *ngFor="let ingrd of recipeData?.extendedIngredients">
+        {{ingrd.originalString}}
+      </p>
     </ion-item>
 
     <ion-item>
-      <button ion-button (click)="launchUrl(recipeData?.sourceUrl)">Open in browser</button>
+      <p item-right text-wrap>{{recipeData?.instructions}}</p>
     </ion-item>
 
   </ion-list>
-  <p>{{recipeData?.instructions}}</p>
 </ion-content>
