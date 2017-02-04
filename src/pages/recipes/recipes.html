@@ -4,12 +4,23 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <ion-row padding>
-        <button class="button button-block" ion-button (click)="generateRecipes()"><ion-icon name="create"></ion-icon>&nbsp;&nbsp;Generate Pantry Recipes</button>
-    </ion-row>
+<ion-content>
+  
+  <ion-list>
+    <ion-list-header item-center>Generate recipes from items</ion-list-header>
+    <ion-item>
+      <button ion-button block large (click)="generateRecipes(0)"><ion-icon name="create"></ion-icon>&nbsp;&nbsp;Generate Recipes</button>
+    </ion-item>
 
-    <ion-row>
+    <ion-list-header>Search recipe by keyword</ion-list-header>
+      <ion-item>
+        <ion-input type="text" placeholder="Enter recipe keywords" [value]="keywords" [(ngModel)]="keywords"></ion-input>
+      </ion-item>
 
-    </ion-row>
+      <ion-item>
+        <button ion-button large (click)="searchRecipes(1, this.keywords)">Search</button>
+      </ion-item>
+
+  </ion-list>
+
 </ion-content>

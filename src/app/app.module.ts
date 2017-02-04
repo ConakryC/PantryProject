@@ -10,7 +10,7 @@ import { PantryListService } from '../providers/pantry-list';
 import { Search } from '../providers/search';
 import { Data } from '../providers/data';
 import { RecipeDetails } from '../pages/recipes/recipe-details/recipe-details'
-import { RecipesFromProductsPage } from '../pages/recipes/recipe-from-products/recipes-from-products';
+import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generated-recipes';
 
 @NgModule({
     declarations: [
@@ -21,7 +21,7 @@ import { RecipesFromProductsPage } from '../pages/recipes/recipe-from-products/r
         ProductsPage,
         ModalContentPage,
         RecipeDetails,
-        RecipesFromProductsPage,
+        GeneratedRecipesPage,
         TabsPage
     ],
     imports: [
@@ -36,7 +36,7 @@ import { RecipesFromProductsPage } from '../pages/recipes/recipe-from-products/r
         ProductsPage,
         ModalContentPage,
         RecipeDetails,
-        RecipesFromProductsPage,
+        GeneratedRecipesPage,
         TabsPage
     ],
     providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data]

@@ -6,7 +6,7 @@
 
 <ion-content class="cards-bg">
   <ion-card *ngFor="let recipe of recipes" (click)="viewRecipeData(recipe.id)">
-    <img src="{{recipe.image}}"/>
+    <img *ngIf="recipe.image" src="{{recipe.image}}"/>
 
     <ion-card-content>
       <ion-card-title>
@@ -16,15 +16,15 @@
 
     <ion-row no-padding>
       <ion-col>
-        <ion-icon name="heart"> {{recipe.likes}}</ion-icon>
+        <ion-icon *ngIf="recipe.likes" name="heart"> {{recipe.likes}}</ion-icon>
       </ion-col>
 
       <ion-col text-center>
-        <ion-icon name="checkbox"> {{recipe.usedIngredientCount}}</ion-icon>
+        <ion-icon *ngIf="recipe.usedIngredientCount" name="checkbox"> {{recipe.usedIngredientCount}}</ion-icon>
       </ion-col>
 
       <ion-col text-right>
-        <ion-icon name="square-outline"> {{recipe.missedIngredientCount}}</ion-icon>
+        <ion-icon *ngIf="recipe.missedIngredientCount" name="square-outline"> {{recipe.missedIngredientCount}}</ion-icon>
       </ion-col>
     </ion-row>
 

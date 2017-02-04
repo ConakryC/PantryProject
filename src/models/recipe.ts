@@ -5,4 +5,5 @@ export interface Recipe {
     usedIngredientCount: number;
     missedIngredientCount: number;
     likes: number;
+    results: any[];
 }

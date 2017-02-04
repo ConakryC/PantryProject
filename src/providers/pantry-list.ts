@@ -142,4 +142,8 @@ export class PantryListService {
       console.error('Amount update error: ', JSON.stringify(err));
     });
   }
+
+  getPantryItems(){
+    return this.pantryList;
+  }
 }

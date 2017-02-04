@@ -9,23 +9,38 @@ const apiKey = 'FBiqUe796amshHCRsuDjukypRhO4p1C7p0FjsnURXVaA5HhxLS';
 @Injectable()
 export class Search {
 
-    constructor(private http: Http) {}
+    private headers: Headers;
+    private reqOps: RequestOptions;
 
-    recipeByIngredients(items: string, numItems: string, sort: string): Observable<Recipe[]> {
-        let headers = new Headers();
-        headers.append('X-Mashape-Key', apiKey);
-        headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'application/json ');
+    constructor(private http: Http) {
 
-        let reqOps = new RequestOptions({
-            headers: headers
+        //Initialize headers and requestoptions for api calls
+        this.headers = new Headers();
+        this.headers.append('X-Mashape-Key', apiKey);
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json ');
+
+        this.reqOps = new RequestOptions({
+            headers: this.headers
         });
+    }
 
-        let ingrds= '?fillIngredients=false&ingredients=' + items;
-        let numIngrds = '&limitLicense=false&number=' + numItems;
+    recipeByIngredients(items: string, numRecipes: string, sort: string): Observable<Recipe[]> {
+        let ingrds = '?fillIngredients=false&ingredients=' + items;
+        let numIngrds = '&limitLicense=false&number=' + numRecipes;
         let rank = '&ranking=' + sort;
 
         return this.http.get('https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients'
-            + ingrds + numIngrds + rank, reqOps).map(res => <Recipe[]>res.json())
+            + ingrds + numIngrds + rank, this.reqOps).map(res => <Recipe[]>res.json())
+    }
+
+    recipeByName(numRec: string, keywords: string): Observable<any> {
+        let ingrds = '?instructionsRequired=false&limitLicense=false';
+        let numRecipes = '&number=' + numRec;
+        let offset = '&offset=0';
+        let query = '&query=' + keywords;
+
+        return this.http.get('https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search'
+        + ingrds + numRecipes + offset + query, this.reqOps).map(res => <any>res.json());
     }
 }
