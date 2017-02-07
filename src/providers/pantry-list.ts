@@ -241,6 +241,18 @@ export class PantryListService {
     });
   }
 
+  clearPantry() {
+    for (let i = 0; i < this.pantryList.length; i++) {
+      this.setAmount(this.pantryList[i], 0);
+    }
+    // this.db.executeSql('DELETE FROM pantry', []).then((data) => {
+    //   console.log('Clearing pantry: ', JSON.stringify(data));
+    // }, (err) => {
+    //   console.error('Error clearing pantry: ', JSON.stringify(err));
+    // });
+    this.load();
+  }
+
   getPantryItems(){
     return this.pantryList;
   }

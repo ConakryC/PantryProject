@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Platform } from 'ionic-angular';
 import { SQLite } from 'ionic-native';
-import { Item } from '../pages/products/item/item';
 
 @Injectable()
 export class DatabaseService {
