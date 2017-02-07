@@ -19,6 +19,12 @@ You should be able to test now.
 You can also add which platforms you want to work with using
 `ionic platform add $platform` and either ios or android
 
+Don't forget to add required plugins:
+$ ionic plugin add cordova-plugin-inappbrowser
+$ ionic plugin add cordova-sqlite-storage
+$ ionic plugin install cordova-plugin-whitelist
+$ ionic plugin add phonegap-plugin-barcodescanner
+
 Make sure that you have the required tools for each platform
 
 Resources can be found at [Ionic](http://ionicframework.com/docs/)
