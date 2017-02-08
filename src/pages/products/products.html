@@ -16,7 +16,8 @@
   </div>
 
   <ion-list>
-    <button ion-item *ngFor="let item of productHelper.pantryService.getOrderedList(productHelper.filter, productHelper.sort)" (click)="itemSelected(item)">
+    <ion-item *ngFor="let item of productHelper.pantryService.getOrderedList(productHelper.filter, productHelper.sort)">
+    <button ion-item no-lines (click)="itemSelected(item)">
       <ion-thumbnail item-left>
         <img src={{item.info.images[0]}}>
       </ion-thumbnail>
@@ -25,6 +26,14 @@
       <p>Amount:
         {{item.amount}}</p>
     </button>
+    <button ion-button item-right (click)="changeByOne(false, item, $event)">
+      <ion-icon name="add-circle"></ion-icon>
+    </button>
+    <button ion-button item-right (click)="changeByOne(true, item, $event)">
+      <ion-icon name="remove-circle"></ion-icon>
+    </button>
+  </ion-item>
+
   </ion-list>
 </ion-content>
 

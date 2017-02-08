@@ -166,4 +166,12 @@ export class ProductHelper {
     });
     alert.present();
   }
+
+  public changeByOne(isSub: boolean, item: Item){
+    if(isSub){
+      this.pantryService.updateAmount(item, -1);
+    }else{
+      this.pantryService.updateAmount(item, 1);
+    }
+  }
 }
