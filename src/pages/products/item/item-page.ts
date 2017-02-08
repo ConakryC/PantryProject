@@ -39,12 +39,18 @@ export class ItemPage {
                 {
                     text: 'Save',
                     handler: data => {
-                        //this.item.amount = data.amount;
+                        //Since the Item is passed to the item-page as json
+                        //it is not reflected by the database value so, we must
+                        //update both VALUES
+
+                        //May want to change this so we base the view off of the database
+                        this.item.amount = data.amount;
                         this.pantryService.setAmount(this.item, data.amount);
                     }
                 }
             ]
         });
+
         prompt.present();
     }
 }

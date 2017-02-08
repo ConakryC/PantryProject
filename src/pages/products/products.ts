@@ -67,6 +67,13 @@ export class ProductsPage {
       fab.close();
   }
 
+  public changeByOne(isSub: boolean, item: Item, event: Event){
+      //Stop the button from calling the outer button
+      event.stopPropagation();
+
+      this.productHelper.changeByOne(isSub, item);
+  }
+
   private itemSelected(item: Item): void {
     this.navCtrl.push(ItemPage, { item: item });
   }
