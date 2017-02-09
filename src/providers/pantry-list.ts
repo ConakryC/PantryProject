@@ -97,9 +97,9 @@ export class PantryListService {
           });
         case Enums.Sort.Amount:
           return sortedItems.sort((itemA, itemB) => {
-            if (itemA.amount < itemB.amount)
+            if (itemA.amount > itemB.amount)
               return -1;
-            else if (itemA.amount > itemB.amount)
+            else if (itemA.amount < itemB.amount)
               return 1;
             return 0;
           });
