@@ -160,8 +160,6 @@ export class PantryListService {
 
   load() {
     this.db.executeSql('SELECT * FROM pantry WHERE amount > 0', []).then((data) => {
-      //console.log('Selected: ', JSON.stringify(data));
-      //console.log(data.rows.item(0));
       this.pantryList = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
@@ -193,35 +191,21 @@ export class PantryListService {
     });
   }
 
-  // checkUPC(upc: string): any {
-  //
-  //   this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
-  //     if (data.rows.length > 0) {
-  //       console.log('In DB');
-  //       new Item(JSON.parse(data.rows.item(0).info), data.rows.item(0).upc,
-  //         data.rows.item(0).amount, data.rows.item(0).id);
-  //     }
-  //     else {
-  //       new Item(0);
-  //     }
-  //   }, (err) => {
-  //     console.error('UPC check error: ', JSON.stringify(err));
-  //   });
-  // }
+  checkUPC(upc: string): any {
 
-  // checkItem(item: Item): any {
-  //
-  //   this.db.executeSql('SELECT * FROM pantry WHERE spoon_id = ? LIMIT 1', [item.info.id]).then((data) => {
-  //     if (data.rows.length > 0) {
-  //       console.log('In DB');
-  //     }
-  //     else {
-  //       return new Item(0);
-  //     }
-  //   }, (err) => {
-  //     console.error('item check error: ', JSON.stringify(err));
-  //   });
-  // }
+    this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
+      if (data.rows.length > 0) {
+        console.log('In DB');
+        new Item(JSON.parse(data.rows.item(0).info), data.rows.item(0).upc,
+          data.rows.item(0).amount, data.rows.item(0).id);
+      }
+      else {
+        new Item(0);
+      }
+    }, (err) => {
+      console.error('UPC check error: ', JSON.stringify(err));
+    });
+  }
 
   setAmount(item: Item, amt: number) {
     this.db.executeSql('UPDATE pantry SET amount = ? WHERE id = ?', [amt, item.id]).then((data) => {
@@ -245,12 +229,35 @@ export class PantryListService {
     for (let i = 0; i < this.pantryList.length; i++) {
       this.setAmount(this.pantryList[i], 0);
     }
-    // this.db.executeSql('DELETE FROM pantry', []).then((data) => {
-    //   console.log('Clearing pantry: ', JSON.stringify(data));
-    // }, (err) => {
-    //   console.error('Error clearing pantry: ', JSON.stringify(err));
-    // });
     this.load();
+  }
+
+  gCollect() {
+    let d = new Date();
+    d.setMonth(d.getMonth() - 1);
+    this.db.executeSql('DELETE FROM pantry WHERE add_date < ? AND amount < ?', [d.getMilliseconds(), 1]).then((data) => {
+      console.log('Deleting outdated items: ', JSON.stringify(data));
+    }, (err) => {
+      console.error('Database cleanup error: ', JSON.stringify(err));
+    });
+  }
+
+  addFavorite(item: Item) {
+    this.db.executeSql('UPDATE pantry SET is_fav = ? WHERE id = ?', [1, item.id]).then((data) => {
+      console.log('Add favorite: ', JSON.stringify(data));
+      this.load();
+    }, (err) => {
+      console.error('Add favorite error: ', JSON.stringify(err));
+    });
+  }
+
+  rmFavorite(item: Item) {
+    this.db.executeSql('UPDATE pantry SET is_fav = ? WHERE id = ?', [0, item.id]).then((data) => {
+      console.log('Remove favorite: ', JSON.stringify(data));
+      this.load();
+    }, (err) => {
+      console.error('Remove favorite error: ', JSON.stringify(err));
+    });
   }
 
   getPantryItems(){
