@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavParams, ViewController, PopoverController } from 'ionic-angular';
 import { ProductHelper } from '../../providers/product-helper';
 import * as Enums from '../../providers/ordering-helper';
+import { PantryListService } from '../../providers/pantry-list'
 
 @Component({
   template: `
@@ -17,6 +18,7 @@ import * as Enums from '../../providers/ordering-helper';
     <button ion-item (click)="chooseFilter()"><ion-icon name="funnel" item-left></ion-icon>Filter</button>
     <button ion-item (click)="chooseSort()"><ion-icon name="list" item-left></ion-icon>Sort</button>
     <button ion-item (click)="dismiss()"><ion-icon *ngIf="!productHelper.isReverse" name="arrow-round-down" item-left></ion-icon><ion-icon *ngIf="productHelper.isReverse" name="arrow-round-up" item-left></ion-icon>Change Order</button>
+    <button ion-item (click)="clear()"><ion-icon name="trash" item-left></ion-icon>Clear Pantry</button>
   </ion-item-group>
 </ion-content>
 `
@@ -25,7 +27,7 @@ export class ProductPagePopover {
 
   event: any;
 
-  constructor(public params: NavParams, public viewCtrl: ViewController, public productHelper: ProductHelper, public popoverCtrl: PopoverController) {
+  constructor(public params: NavParams, public viewCtrl: ViewController, public productHelper: ProductHelper, public popoverCtrl: PopoverController, public pService: PantryListService) {
     if (params.data)
       this.event = params.data;
   }
@@ -64,6 +66,11 @@ export class ProductPagePopover {
 
   public dismiss(): void {
     this.viewCtrl.dismiss();
+  }
+
+  public clear(): void {
+    this.pService.clearPantry();
+    this.dismiss();
   }
 }
 
