@@ -91,12 +91,7 @@ export class ProductHelper {
 
   public openBarcodeScanner(): void {
     BarcodeScanner.scan().then((barcodeData) => {
-      this.pantryService.searchUPC(barcodeData.text).subscribe(js => {
-        if (!(js.status && js.status == "failure"))
-          this.pantryService.addItem(new Item(js, barcodeData.text));
-      }, error => {
-        console.log("Subscribing failed after barcode search");
-      });
+      this.pantryService.searchUPC(barcodeData.text);
     }, (err) => {
       console.log('UPC Searching failed');
       this.upcSearchFail();

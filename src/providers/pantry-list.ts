@@ -28,7 +28,7 @@ export class PantryListService {
   constructor(public http: Http, private platform: Platform) {
     this.platform.ready().then(() => {
       this.db = new SQLite();
-      this.db.openDatabase({name: 'pantry.db', location: 'default'}).then(() => {
+      this.db.openDatabase({ name: 'pantry.db', location: 'default' }).then(() => {
         this.load();
       }, (err) => {
         console.error('Database Error: ', err);
@@ -136,8 +136,23 @@ export class PantryListService {
    * This returns an observable that needs to be dealt with
    * @param upc
    */
-  searchUPC(upc: string): Observable<any> {
-    return this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/upc/" + upc, this.opt).map(res => res.json());
+  searchUPC(upc: string) {
+    console.log("Does UPC exist: " + this.upcExists(upc));
+    //Check if UPC exists in the database
+    if (this.upcExists(upc)) {
+      //If so increment that specific value
+      this.updateAmountByUPC(upc, 1);
+    } else {
+      //If not in database perform a API call to match UPC
+      this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/upc/" + upc, this.opt).map(res => res.json()).subscribe(js => {
+        //Make sure the API call didn't fail
+        if (!(js.status && js.status == "failure"))
+          //If not add the item
+          this.addItem(new Item(js, upc));
+      }, error => {
+        console.log("Subscribing failed after barcode search");
+      });
+    }
   }
 
   searchName(name: string): Observable<any> {
@@ -151,10 +166,10 @@ export class PantryListService {
   add(addItem: Item) {
     this.db.executeSql('INSERT INTO pantry (upc, spoon_id, amount, add_date, info) VALUES (?,?,?,?,?)',
       [addItem.upc, addItem.info.id, addItem.amount, new Date().getMilliseconds(), JSON.stringify(addItem.info)]).then((data) => {
-      console.log('Inserted: ', JSON.stringify(data));
-    }, (err) => {
-      console.error('DB insert error: ', JSON.stringify(err));
-    });
+        console.log('Inserted: ', JSON.stringify(data));
+      }, (err) => {
+        console.error('DB insert error: ', JSON.stringify(err));
+      });
     this.load();
   }
 
@@ -191,8 +206,20 @@ export class PantryListService {
     });
   }
 
-  checkUPC(upc: string): any {
+  upcExists(upc: string): boolean {
+    this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
+      if (data.rows.length > 0) {
+        console.log('In DB');
+        return true;
+      }
+    }, (err) => {
+      console.error('UPC check error: ', JSON.stringify(err));
+    });
 
+    return false;
+  }
+
+  checkUPC(upc: string): any {
     this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
       if (data.rows.length > 0) {
         console.log('In DB');
@@ -209,6 +236,15 @@ export class PantryListService {
 
   setAmount(item: Item, amt: number) {
     this.db.executeSql('UPDATE pantry SET amount = ? WHERE id = ?', [amt, item.id]).then((data) => {
+      console.log('Updated item amount ', JSON.stringify(data));
+      this.load();
+    }, (err) => {
+      console.error('Amount update error: ', JSON.stringify(err));
+    });
+  }
+
+  updateAmountByUPC(upc: string, dif: number) {
+    this.db.executeSql('UPDATE pantry SET amount = amount + ? WHERE upc = ?', [dif, upc]).then((data) => {
       console.log('Updated item amount ', JSON.stringify(data));
       this.load();
     }, (err) => {
@@ -260,7 +296,7 @@ export class PantryListService {
     });
   }
 
-  getPantryItems(){
+  getPantryItems() {
     return this.pantryList;
   }
 }
