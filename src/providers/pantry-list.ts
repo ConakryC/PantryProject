@@ -3,7 +3,7 @@ import { Http, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Item } from '../pages/products/item/item';
-import { Platform } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { SQLite } from 'ionic-native';
 import * as Enums from './ordering-helper';
 
@@ -25,7 +25,7 @@ export class PantryListService {
   private headers: Headers;
   private opt: RequestOptions;
 
-  constructor(public http: Http, private platform: Platform) {
+  constructor(public http: Http, private platform: Platform, public toastCtrl: ToastController) {
     this.platform.ready().then(() => {
       this.db = new SQLite();
       this.db.openDatabase({ name: 'pantry.db', location: 'default' }).then(() => {
@@ -143,14 +143,23 @@ export class PantryListService {
         console.log('In DB');
         //Increment that specific value
         this.updateAmountByUPC(upc, 1);
-      }else{
+      } else {
         console.log("Using API call");
         //If not in database perform a API call to match UPC
         this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/upc/" + upc, this.opt).map(res => res.json()).subscribe(js => {
           //Make sure the API call didn't fail
-          if (!(js.status && js.status == "failure"))
+          if (!(js.status && js.status == "failure")) {
             //If not add the item
             this.addItem(new Item(js, upc));
+          }
+          else {
+            let toast = this.toastCtrl.create({
+              message: 'UPC was not found: ' + upc,
+              duration: 3000,
+              position: 'middle'
+            });
+            toast.present();
+          }
         }, error => {
           console.log("Subscribing failed after barcode search");
         });
@@ -288,7 +297,7 @@ export class PantryListService {
     });
   }
 
-  getRecent() : any {
+  getRecent(): any {
     let recentList = [];
     this.db.executeSql('SELECT * FROM pantry WHERE amount = 0', []).then((data) => {
       if (data.rows.length > 0) {
@@ -302,7 +311,7 @@ export class PantryListService {
     });
     return recentList;
   }
-  
+
   getPantryItems() {
     return this.pantryList;
   }

@@ -89,6 +89,10 @@ export class ProductHelper {
     prompt.present();
   }
 
+  /*
+  * Opens the devices barcode scanner and adds the item if it exists
+  * if not found then it informs the user
+  */
   public openBarcodeScanner(): void {
     BarcodeScanner.scan().then((barcodeData) => {
       this.pantryService.searchUPC(barcodeData.text);
@@ -162,10 +166,10 @@ export class ProductHelper {
     alert.present();
   }
 
-  public changeByOne(isSub: boolean, item: Item){
-    if(isSub){
+  public changeByOne(isSub: boolean, item: Item) {
+    if (isSub) {
       this.pantryService.updateAmount(item, -1);
-    }else{
+    } else {
       this.pantryService.updateAmount(item, 1);
     }
   }
