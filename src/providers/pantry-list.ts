@@ -137,22 +137,27 @@ export class PantryListService {
    * @param upc
    */
   searchUPC(upc: string) {
-    console.log("Does UPC exist: " + this.upcExists(upc));
-    //Check if UPC exists in the database
-    if (this.upcExists(upc)) {
-      //If so increment that specific value
-      this.updateAmountByUPC(upc, 1);
-    } else {
-      //If not in database perform a API call to match UPC
-      this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/upc/" + upc, this.opt).map(res => res.json()).subscribe(js => {
-        //Make sure the API call didn't fail
-        if (!(js.status && js.status == "failure"))
-          //If not add the item
-          this.addItem(new Item(js, upc));
-      }, error => {
-        console.log("Subscribing failed after barcode search");
-      });
-    }
+    this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
+      //Check if UPC is found in database first
+      if (data.rows.length > 0) {
+        console.log('In DB');
+        //Increment that specific value
+        this.updateAmountByUPC(upc, 1);
+      }else{
+        console.log("Using API call");
+        //If not in database perform a API call to match UPC
+        this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/upc/" + upc, this.opt).map(res => res.json()).subscribe(js => {
+          //Make sure the API call didn't fail
+          if (!(js.status && js.status == "failure"))
+            //If not add the item
+            this.addItem(new Item(js, upc));
+        }, error => {
+          console.log("Subscribing failed after barcode search");
+        });
+      }
+    }, (err) => {
+      console.error('UPC check error: ', JSON.stringify(err));
+    });
   }
 
   searchName(name: string): Observable<any> {
@@ -204,19 +209,6 @@ export class PantryListService {
     }, (err) => {
       console.error('item check error: ', JSON.stringify(err));
     });
-  }
-
-  upcExists(upc: string): boolean {
-    this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
-      if (data.rows.length > 0) {
-        console.log('In DB');
-        return true;
-      }
-    }, (err) => {
-      console.error('UPC check error: ', JSON.stringify(err));
-    });
-
-    return false;
   }
 
   checkUPC(upc: string): any {
