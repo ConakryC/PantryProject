@@ -74,6 +74,23 @@ export class ProductsPage {
       this.productHelper.changeByOne(isSub, item);
   }
 
+  /*
+  * This toggles an items favorite state
+  * @param item is the item to toggle
+  * @param event is the click event that happened when this method was called
+  */
+  public toggleFavorite(item: Item, event: Event){
+      //Stop the button from calling the outer button
+      event.stopPropagation();
+
+      //Toggle favorite for the item
+      if (item.favorite) {
+        this.productHelper.pantryService.rmFavorite(item);
+      } else {
+        this.productHelper.pantryService.addFavorite(item);
+      }
+  }
+
   private itemSelected(item: Item): void {
     this.navCtrl.push(ItemPage, { item: item });
   }

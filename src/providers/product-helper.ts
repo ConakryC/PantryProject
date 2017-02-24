@@ -19,6 +19,7 @@ export class ProductHelper {
     //TODO: Save this as app config and load on start
     this.filter = Enums.Filter.All;
     this.sort = Enums.Sort.None;
+    this.isReverse = false;
   }
 
   public openManualSearch(): void {

@@ -11,10 +11,10 @@ import * as Enums from './ordering-helper';
 export class PantryListService {
 
   /**
-   This is the list returned and displayed on the product page.
-   Not sure if we should do it in the code or via custom pipes?
+   This is the list that returns items that are still in the database
+   but, have amounts of 0
    **/
-  public orderedList: Item[];
+  public recentList: Item[];
 
   /**
    The complete list of all items the user has. There is no
@@ -37,6 +37,7 @@ export class PantryListService {
 
     //Initialize pantry list
     this.pantryList = [];
+    this.recentList = [];
 
     this.headers = new Headers();
     this.headers.append('X-Mashape-Key', 'FBiqUe796amshHCRsuDjukypRhO4p1C7p0FjsnURXVaA5HhxLS');
@@ -46,6 +47,14 @@ export class PantryListService {
     this.opt = new RequestOptions({
       headers: this.headers
     });
+  }
+
+  public getDisplayList(filter?: Enums.Filter, sort?: Enums.Sort, isReverse?: boolean): Item[] {
+    if (isReverse) {
+      return this.getOrderedList(filter, sort).reverse();
+    } else {
+      return this.getOrderedList(filter, sort);
+    }
   }
 
   public getOrderedList(filter?: Enums.Filter, sort?: Enums.Sort): Item[] {
@@ -62,8 +71,14 @@ export class PantryListService {
               }
               break;
             case Enums.Filter.Favorite:
+              if (itm.favorite) {
+                sortedItems.push(itm);
+              }
               break;
             case Enums.Filter.Not_Favorite:
+              if (!itm.favorite) {
+                sortedItems.push(itm);
+              }
               break;
             case Enums.Filter.Dairy_Free:
               if (itm.info.badges && itm.info.badges.indexOf('dairy_free') > -1) {
@@ -88,7 +103,7 @@ export class PantryListService {
     if (sort) {
       switch (sort) {
         case Enums.Sort.Alphabetical:
-          return sortedItems.sort((itemA, itemB) => {
+          return sortedItems.sort((itemA: Item, itemB: Item) => {
             if (itemA.info.title < itemB.info.title)
               return -1;
             else if (itemA.info.title > itemB.info.title)
@@ -96,7 +111,7 @@ export class PantryListService {
             return 0;
           });
         case Enums.Sort.Amount:
-          return sortedItems.sort((itemA, itemB) => {
+          return sortedItems.sort((itemA: Item, itemB: Item) => {
             if (itemA.amount > itemB.amount)
               return -1;
             else if (itemA.amount < itemB.amount)
@@ -104,7 +119,7 @@ export class PantryListService {
             return 0;
           });
         case Enums.Sort.Price:
-          return sortedItems.sort((itemA, itemB) => {
+          return sortedItems.sort((itemA: Item, itemB: Item) => {
             if (itemA.info.price < itemB.info.price)
               return -1;
             else if (itemA.info.price > itemB.info.price)
@@ -112,7 +127,7 @@ export class PantryListService {
             return 0;
           });
         case Enums.Sort.Score:
-          return sortedItems.sort((itemA, itemB) => {
+          return sortedItems.sort((itemA: Item, itemB: Item) => {
             if (itemA.info.spoonacular_score < itemB.info.spoonacular_score)
               return -1;
             else if (itemA.info.spoonacular_score > itemB.info.spoonacular_score)
@@ -120,7 +135,9 @@ export class PantryListService {
             return 0;
           });
         case Enums.Sort.Favorite:
-          break;
+          return sortedItems.sort((itemA: Item, itemB: Item) => {
+            return (itemA.favorite === itemB.favorite) ? 0 : itemA.favorite ? -1 : 1;
+          });
         default:
           //Don't mess with the array if not one of the above sorts
           //Ex. NONE sort
@@ -188,23 +205,37 @@ export class PantryListService {
   }
 
   load() {
+    //Pantry list
     this.db.executeSql('SELECT * FROM pantry WHERE amount > 0', []).then((data) => {
       this.pantryList = [];
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
           this.pantryList.push(new Item(JSON.parse(data.rows.item(i).info), data.rows.item(i).upc,
-            data.rows.item(i).amount, data.rows.item(i).id));
+            data.rows.item(i).amount, data.rows.item(i).id, data.rows.item(i).is_fav));
         }
       }
     }, (err) => {
       console.error('DB load error: ', JSON.stringify(err))
+    });
+
+    //Recent list
+    this.db.executeSql('SELECT * FROM pantry WHERE amount = 0', []).then((data) => {
+      this.recentList = [];
+      if (data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          this.recentList.push(new Item(JSON.parse(data.rows.item(i).info), data.rows.item(i).upc,
+            data.rows.item(i).amount, data.rows.item(i).id));
+        }
+      }
+    }, (err) => {
+      console.error('recent load error: ', JSON.stringify(err))
     });
   }
 
   public addItem(itemToAdd: Item): void {
 
     //TODO: Testing purposes, don't forget to remove
-    //this.pantryList.push(itemToAdd);
+    this.pantryList.push(itemToAdd);
 
     this.db.executeSql('SELECT * FROM pantry WHERE spoon_id = ? LIMIT 1', [itemToAdd.info.id]).then((data) => {
       if (data.rows.length > 0) {
@@ -280,6 +311,7 @@ export class PantryListService {
   }
 
   addFavorite(item: Item) {
+    item.favorite = true;
     this.db.executeSql('UPDATE pantry SET is_fav = ? WHERE id = ?', [1, item.id]).then((data) => {
       console.log('Add favorite: ', JSON.stringify(data));
       this.load();
@@ -289,6 +321,7 @@ export class PantryListService {
   }
 
   rmFavorite(item: Item) {
+    item.favorite = false;
     this.db.executeSql('UPDATE pantry SET is_fav = ? WHERE id = ?', [0, item.id]).then((data) => {
       console.log('Remove favorite: ', JSON.stringify(data));
       this.load();
@@ -297,19 +330,8 @@ export class PantryListService {
     });
   }
 
-  getRecent(): any {
-    let recentList = [];
-    this.db.executeSql('SELECT * FROM pantry WHERE amount = 0', []).then((data) => {
-      if (data.rows.length > 0) {
-        for (let i = 0; i < data.rows.length; i++) {
-          recentList.push(new Item(JSON.parse(data.rows.item(i).info), data.rows.item(i).upc,
-            data.rows.item(i).amount, data.rows.item(i).id));
-        }
-      }
-    }, (err) => {
-      console.error('recent load error: ', JSON.stringify(err))
-    });
-    return recentList;
+  getRecent() {
+    return this.recentList;
   }
 
   getPantryItems() {

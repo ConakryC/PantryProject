@@ -5,7 +5,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { RecipesPage } from '../pages/recipes/recipes';
 import { ItemPage } from '../pages/products/item/item-page';
 import { ProductsPage } from '../pages/products/products';
-import { ProductPagePopover, ProductSortPopover, ProductFilterPopover } from '../pages/products/product-popovers';
+import { ProductPagePopover, ProductSortPopover, ProductFilterPopover, RecentItemsPopover } from '../pages/products/product-popovers';
 import { ModalContentPage } from '../pages/products/product-modal';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
@@ -27,6 +27,7 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ProductPagePopover,
         ProductSortPopover,
         ProductFilterPopover,
+        RecentItemsPopover,
         RecipeDetails,
         GeneratedRecipesPage,
         FilterPipe,
@@ -46,6 +47,7 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ProductPagePopover,
         ProductSortPopover,
         ProductFilterPopover,
+        RecentItemsPopover,
         RecipeDetails,
         GeneratedRecipesPage,
         TabsPage
