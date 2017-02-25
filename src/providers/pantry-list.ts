@@ -224,7 +224,7 @@ export class PantryListService {
       if (data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
           this.recentList.push(new Item(JSON.parse(data.rows.item(i).info), data.rows.item(i).upc,
-            data.rows.item(i).amount, data.rows.item(i).id));
+            data.rows.item(i).amount, data.rows.item(i).id, data.rows.item(i).is_fav));
         }
       }
     }, (err) => {
