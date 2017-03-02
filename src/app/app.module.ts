@@ -10,11 +10,10 @@ import { ModalContentPage } from '../pages/products/product-modal';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
 import { ProductHelper } from '../providers/product-helper';
-import { Search } from '../providers/search';
-import { Data } from '../providers/data';
 import { FilterPipe } from '../pipes/filter-pipe';
 import { RecipeDetails } from '../pages/recipes/recipe-details/recipe-details'
-import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generated-recipes';
+import { RecipeListService } from '../providers/recipe-list';
+
 
 @NgModule({
     declarations: [
@@ -29,7 +28,6 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ProductFilterPopover,
         RecentItemsPopover,
         RecipeDetails,
-        GeneratedRecipesPage,
         FilterPipe,
         TabsPage
     ],
@@ -49,9 +47,8 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ProductFilterPopover,
         RecentItemsPopover,
         RecipeDetails,
-        GeneratedRecipesPage,
         TabsPage
     ],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data, ProductHelper]
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, RecipeListService, ProductHelper]
 })
 export class AppModule { }

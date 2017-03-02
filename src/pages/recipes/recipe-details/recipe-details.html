@@ -11,28 +11,31 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Recipe ID</ion-label>
-      <ion-badge item-right>{{recipeData?.id}}</ion-badge>
+      <ion-label>Prep Time</ion-label>
+      <ion-badge item-right>{{recipeData?.preparationMinutes}} Minutes</ion-badge>
     </ion-item>
-
+    
     <ion-item>
-      <ion-label>Ready in</ion-label>
-      <ion-badge item-right>{{recipeData?.readyInMinutes}} Minutes</ion-badge>
+      <ion-label>Cook Time</ion-label>
+      <ion-badge item-right>{{recipeData?.cookingMinutes}} Minutes</ion-badge>
     </ion-item>
 
-    <ion-item *ngIf="recipeData?.instructions == NULL">
-      <button ion-button block (click)="launchUrl(recipeData?.sourceUrl)">Open in browser</button>
-    </ion-item>
-
-
-    <ion-item>
+    <ion-item text-wrap>
+      <h1>Ingredients</h1>
       <p *ngFor="let ingrd of recipeData?.extendedIngredients">
         {{ingrd.originalString}}
       </p>
     </ion-item>
 
-    <ion-item>
-      <p item-right text-wrap>{{recipeData?.instructions}}</p>
+    <ion-item text-wrap *ngIf="recipeData?.instructions != NULL">
+      <h1>Instructions</h1>
+      <h2 text-wrap *ngFor="let step of steps">
+          {{step.step}}
+      </h2>
+    </ion-item>
+
+    <ion-item *ngIf="recipeData?.instructions == NULL">
+      <button ion-button block large (click)="launchUrl(recipeData?.sourceUrl)">Open in browser</button>
     </ion-item>
 
   </ion-list>
