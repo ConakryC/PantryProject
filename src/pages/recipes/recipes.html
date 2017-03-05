@@ -1,15 +1,28 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title>Found Recipes</ion-title>
-  </ion-navbar>
-</ion-header>
+  <ion-toolbar color="primary">
 
+    <ion-buttons end>
+      <button ion-button clear color="light" (click)="getCheckboxInfo()">
+        <ion-icon color="light" name="create"></ion-icon>
+        &nbsp;&nbsp; Edit Items
+      </button>
+    </ion-buttons>
+    
+    <button  ion-button clear color="light" (click)="searchRecipes()">
+      <ion-icon color="light" name="search"></ion-icon>
+      &nbsp;&nbsp; Search
+    </button>
+
+  </ion-toolbar>
+</ion-header>
 <ion-content class="cards-bg">
-  
+
+
+
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
+
   <ion-content padding *ngIf="numRecipes == 0">
       <h2>No recipes found!</h2>
   </ion-content>

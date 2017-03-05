@@ -1,3 +1,14 @@
+/**
+ * recipes-list.ts
+ * Created: 2/1/17
+ * Author: Bryan Martinez (mbryan93@live.com)
+ * 
+ * Edited: 3/5/17 By: Bryan Martinez
+ * 
+ * A recipe list service that provides api call functions and other useful functions for recipe
+ * generation and display.
+ */
+
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
@@ -69,17 +80,24 @@ export class RecipeListService {
     }
 
     //Return an item list as a string of breadcrumbs for string literal search
-    getItemList() {
+    getItemList(): string {
         //Reload the database before retrieving any updated pantry items
         this.pantryService.load();
         this.itemList = this.pantryService.getPantryItems();
-        
-        //Load pantry items and store as a string in "items"
+        this.items = "";
+        //Loop pantry items and store as a string in "items"
         for (let item of this.itemList) {
-            console.log(item.id);
-            this.items = this.items + ', ' + item.info.breadcrumbs[0]; 
+            if (this.items === "") this.items = item.info.breadcrumbs[0];
+            else
+                this.items = this.items + ', ' + item.info.breadcrumbs[0]; 
         }
 
         return this.items;
+    }
+
+    //Refresh pantry list
+    refresh():any[] {
+        this.pantryService.load();
+        return this.pantryService.getPantryItems();
     }
 }
