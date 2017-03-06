@@ -25,23 +25,36 @@ import { Item } from './item/item';
 })
 export class ProductPagePopover {
 
+  /*
+  * Touch event data, needed to place the popovers at the same spot
+  */
   event: any;
 
   constructor(public params: NavParams, public viewCtrl: ViewController, public productHelper: ProductHelper, public popoverCtrl: PopoverController, public toastCtrl: ToastController) {
+    //Set event data
     if (params.data)
       this.event = params.data;
   }
 
+  /*
+  * Open manual search
+  */
   public manualSearch(): void {
     this.productHelper.openManualSearch();
     this.dismiss();
   }
 
+  /*
+  * Scan a barcode
+  */
   public scanBarcode(): void {
     this.productHelper.openBarcodeScanner();
     this.dismiss();
   }
 
+  /*
+  * Choose a filter
+  */
   public chooseFilter(): void {
     //Create popover
     let popover = this.popoverCtrl.create(ProductFilterPopover);
@@ -53,6 +66,9 @@ export class ProductPagePopover {
     this.dismiss();
   }
 
+  /*
+  * Choose a sort
+  */
   public chooseSort(): void {
     //Create popover
     let popover = this.popoverCtrl.create(ProductSortPopover);
@@ -64,13 +80,19 @@ export class ProductPagePopover {
     this.dismiss();
   }
 
+  /*
+  * Display a list of items that have amounts less than 0 so the user
+  * can readd them to the pantry list
+  */
   public showRecentItems(): void {
     if (this.productHelper.pantryService.getRecent().length < 1) {
+      //Display a toast to the user if there weren't any recent items
       let toast = this.toastCtrl.create({
         message: 'No recent items found',
         duration: 3000,
         position: 'middle'
       });
+      //Show toast
       toast.present();
     } else {
       //Create popover
@@ -84,6 +106,9 @@ export class ProductPagePopover {
     this.dismiss();
   }
 
+  /*
+  * Change the order of the pantry list
+  */
   public toggleOrder(): void {
     //Toggle the isReverse from product helper
     this.productHelper.isReverse = !this.productHelper.isReverse;
@@ -91,13 +116,19 @@ export class ProductPagePopover {
     this.dismiss();
   }
 
-  public dismiss(): void {
-    this.viewCtrl.dismiss();
-  }
-
+  /*
+  * Clear the pantry list
+  */
   public clear(): void {
     this.productHelper.pantryService.clearPantry();
     this.dismiss();
+  }
+
+  /*
+  * Dismiss the popover
+  */
+  public dismiss(): void {
+    this.viewCtrl.dismiss();
   }
 }
 
@@ -120,7 +151,9 @@ export class ProductSortPopover {
   }
 
   public chooseSort(sort: Enums.Sort): void {
+    //Set the sort we chose
     this.productHelper.chooseSort(sort);
+    //Dismiss
     this.viewCtrl.dismiss();
   }
 
@@ -151,7 +184,9 @@ export class ProductFilterPopover {
   }
 
   public chooseFilter(filter: Enums.Filter): void {
+    //Set the filter we chose
     this.productHelper.chooseFilter(filter);
+    //Dismiss popover
     this.viewCtrl.dismiss();
   }
 
@@ -188,7 +223,9 @@ export class RecentItemsPopover {
   }
 
   public update(item: Item, lastItem?: boolean): void {
+    //Update the amount in the database
     this.productHelper.changeByOne(false, item);
+    //If it was the last item then dismiss the popover
     if (lastItem) {
       this.dismiss();
     }

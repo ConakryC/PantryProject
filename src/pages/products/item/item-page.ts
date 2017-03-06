@@ -9,9 +9,13 @@ import { PantryListService } from '../../../providers/pantry-list';
 })
 export class ItemPage {
 
+  /*
+  * The current item being displayed
+  */
   private item: Item;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public pantryService: PantryListService, public alertCtrl: AlertController) {
+    //Grab from nav params
     this.item = this.navParams.get('item');
 
     console.log(this.item.info);
@@ -22,18 +26,24 @@ export class ItemPage {
   */
   private toggleFavorite(): void {
     if (this.item.favorite) {
+      //Remove favorite
       this.pantryService.rmFavorite(this.item);
     } else {
+      //Add favorite
       this.pantryService.addFavorite(this.item);
     }
   }
 
+  /*
+  * Change the current amount of the item. This appears in the form of an alert.
+  */
   private changeAmount(): void {
     let prompt = this.alertCtrl.create({
       title: 'Enter New Amount',
       message: "Enter a new amount for the product...",
       inputs: [
         {
+          //Input for new amount of the item
           name: 'amount',
           placeholder: 'New Amount',
           type: 'number'
@@ -54,13 +64,17 @@ export class ItemPage {
             //update both VALUES
 
             //May want to change this so we base the view off of the database
+
+            //Update locaally
             this.item.amount = data.amount;
+            //Update database
             this.pantryService.setAmount(this.item, data.amount);
           }
         }
       ]
     });
 
+    //Show alert
     prompt.present();
   }
 }

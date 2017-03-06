@@ -10,7 +10,6 @@ import { ModalContentPage } from '../pages/products/product-modal';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
 import { ProductHelper } from '../providers/product-helper';
-import { FilterPipe } from '../pipes/filter-pipe';
 import { RecipeDetails } from '../pages/recipes/recipe-details/recipe-details'
 import { RecipeListService } from '../providers/recipe-list';
 
@@ -28,7 +27,6 @@ import { RecipeListService } from '../providers/recipe-list';
         ProductFilterPopover,
         RecentItemsPopover,
         RecipeDetails,
-        FilterPipe,
         TabsPage
     ],
     imports: [

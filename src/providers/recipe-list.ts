@@ -2,9 +2,9 @@
  * recipes-list.ts
  * Created: 2/1/17
  * Author: Bryan Martinez (mbryan93@live.com)
- * 
+ *
  * Edited: 3/5/17 By: Bryan Martinez
- * 
+ *
  * A recipe list service that provides api call functions and other useful functions for recipe
  * generation and display.
  */
@@ -15,7 +15,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { Recipe } from '../models/recipe'
 import { RecipeData } from '../models/recipe-data';
-import { Platform } from 'ionic-angular';
 import { PantryListService } from './pantry-list';
 import { Item } from '../pages/products/item/item';
 
@@ -89,7 +88,7 @@ export class RecipeListService {
         for (let item of this.itemList) {
             if (this.items === "") this.items = item.info.breadcrumbs[0];
             else
-                this.items = this.items + ', ' + item.info.breadcrumbs[0]; 
+                this.items = this.items + ', ' + item.info.breadcrumbs[0];
         }
 
         return this.items;
