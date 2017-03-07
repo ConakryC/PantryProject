@@ -32,6 +32,11 @@ export class MyApp {
         }, (err) => {
           console.error('Unable to execute sql: ', err);
         });
+        db.executeSql('CREATE TABLE IF NOT EXISTS recipes (id INTEGER PRIMARY KEY AUTOINCREMENT,spoon_id INTEGER, data TEXT)', {}).then((data) => {
+          console.log('Table created: ', data);
+        }, (err) => {
+          console.error('Unable to execute sql: ', err);
+        });
       }, (err) => {
         console.error('Unable to open database: ', err);
       });
