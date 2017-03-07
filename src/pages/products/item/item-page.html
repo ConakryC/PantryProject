@@ -8,12 +8,17 @@
 <ion-content>
     <ion-list>
         <ion-item>
-            <img src={{item.info.images[0]}}>
+            <img item-left src={{item.info.images[0]}}>
         </ion-item>
         <ion-item>
             <ion-label>Ingredient ID</ion-label>
             <ion-badge item-right>{{item.info.id}}</ion-badge>
         </ion-item>
+        <button ion-item (click)="toggleFavorite()">
+            <ion-label>Favorite</ion-label>
+            <ion-icon *ngIf="item.favorite" name="star" color="bright" item-right></ion-icon>
+            <ion-icon *ngIf="!item.favorite" name="star-outline" color="bright" item-right></ion-icon>
+        </button>
         <button ion-item (click)="changeAmount()">
             <ion-label>Amount</ion-label>
             <ion-badge item-right>{{item.amount}}</ion-badge>

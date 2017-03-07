@@ -34,10 +34,12 @@ export class ModalContentPage {
   private products: any;
 
   constructor(public params: NavParams, public viewCtrl: ViewController) {
+    //Get product from params
     this.products = this.params.get('products');
   }
 
   dismiss(item?: any) {
+    //Dismiss modal and send item back with it
     this.viewCtrl.dismiss(item);
   }
 }

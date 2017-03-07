@@ -3,7 +3,6 @@ import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
-import { InAppBrowser } from 'ionic-native';
 
 @Component({
   templateUrl: 'app.html'

@@ -1,26 +1,60 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title>Recipes</ion-title>
-  </ion-navbar>
+  <ion-toolbar color="primary">
+
+    <ion-buttons end>
+      <button ion-button clear color="light" (click)="getCheckboxInfo()">
+        <ion-icon color="light" name="create"></ion-icon>
+        &nbsp;&nbsp; Edit Items
+      </button>
+    </ion-buttons>
+    
+    <button  ion-button clear color="light" (click)="searchRecipes()">
+      <ion-icon color="light" name="search"></ion-icon>
+      &nbsp;&nbsp; Search
+    </button>
+
+  </ion-toolbar>
 </ion-header>
+<ion-content class="cards-bg">
 
-<ion-content>
-  
-  <ion-list>
-    <ion-list-header item-center>Generate recipes from items</ion-list-header>
-    <ion-item>
-      <button ion-button block large (click)="generateRecipes(0)"><ion-icon name="create"></ion-icon>&nbsp;&nbsp;Generate Recipes</button>
-    </ion-item>
 
-    <ion-list-header>Search recipe by keyword</ion-list-header>
-      <ion-item>
-        <ion-input type="text" placeholder="Enter recipe keywords" [value]="keywords" [(ngModel)]="keywords"></ion-input>
-      </ion-item>
 
-      <ion-item>
-        <button ion-button large (click)="searchRecipes(1, this.keywords)">Search</button>
-      </ion-item>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-  </ion-list>
+  <ion-content padding *ngIf="numRecipes == 0">
+      <h2>No recipes found!</h2>
+  </ion-content>
 
+  <ion-card tappable *ngFor="let recipe of recipes" (click)="viewRecipeData(recipe.id)">
+    <img *ngIf="recipe.image" src="{{recipe.image}}"/>
+
+    <ion-card-content>
+      <ion-card-title>
+        {{recipe.title}}
+      </ion-card-title>
+    </ion-card-content>
+
+    <ion-row no-padding>
+      <ion-col>
+        <ion-icon *ngIf="recipe.likes != NULL" name="heart">
+          {{recipe.likes}}
+          </ion-icon>
+      </ion-col>
+
+      <ion-col text-center>
+        <ion-icon *ngIf="recipe.usedIngredientCount != NULL" name="checkbox">
+          {{recipe.usedIngredientCount}}
+          </ion-icon>
+      </ion-col>
+
+      <ion-col text-right>
+        <ion-icon *ngIf="recipe.missedIngredientCount != NULL" name="square-outline">
+          {{recipe.missedIngredientCount}}
+          </ion-icon>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
 </ion-content>

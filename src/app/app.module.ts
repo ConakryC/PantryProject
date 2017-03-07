@@ -5,16 +5,14 @@ import { ProfilePage } from '../pages/profile/profile';
 import { RecipesPage } from '../pages/recipes/recipes';
 import { ItemPage } from '../pages/products/item/item-page';
 import { ProductsPage } from '../pages/products/products';
-import { ProductPagePopover, ProductSortPopover, ProductFilterPopover } from '../pages/products/product-popovers';
+import { ProductPagePopover, ProductSortPopover, ProductFilterPopover, RecentItemsPopover } from '../pages/products/product-popovers';
 import { ModalContentPage } from '../pages/products/product-modal';
 import { TabsPage } from '../pages/tabs/tabs';
 import { PantryListService } from '../providers/pantry-list';
 import { ProductHelper } from '../providers/product-helper';
-import { Search } from '../providers/search';
-import { Data } from '../providers/data';
-import { FilterPipe } from '../pipes/filter-pipe';
 import { RecipeDetails } from '../pages/recipes/recipe-details/recipe-details'
-import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generated-recipes';
+import { RecipeListService } from '../providers/recipe-list';
+
 
 @NgModule({
     declarations: [
@@ -27,9 +25,8 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ProductPagePopover,
         ProductSortPopover,
         ProductFilterPopover,
+        RecentItemsPopover,
         RecipeDetails,
-        GeneratedRecipesPage,
-        FilterPipe,
         TabsPage
     ],
     imports: [
@@ -46,10 +43,10 @@ import { GeneratedRecipesPage } from '../pages/recipes/generated-recipes/generat
         ProductPagePopover,
         ProductSortPopover,
         ProductFilterPopover,
+        RecentItemsPopover,
         RecipeDetails,
-        GeneratedRecipesPage,
         TabsPage
     ],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, Search, Data, ProductHelper]
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, PantryListService, RecipeListService, ProductHelper]
 })
 export class AppModule { }
