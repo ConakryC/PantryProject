@@ -10,7 +10,9 @@ import { InAppBrowser } from 'ionic-native';
 })
 export class MyApp {
   rootPage = TabsPage;
-
+  /**
+   *Constructor with the primary function of creating and maintaining internal database tables for the app.
+   * */
   constructor(platform: Platform, plService: PantryListService) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

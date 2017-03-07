@@ -147,7 +147,10 @@ export class PantryListService {
   getProductFromID(id: number): Observable<any> {
     return this.http.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/products/" + id, this.opt).map(res => res.json());
   }
-
+  /**
+    * Add new items to database
+    * @param addItem the item to be added
+    */
   add(addItem: Item) {
     this.db.executeSql('INSERT INTO pantry (upc, spoon_id, amount, add_date, info) VALUES (?,?,?,?,?)',
       [addItem.upc, addItem.info.id, addItem.amount, new Date().getMilliseconds(), JSON.stringify(addItem.info)]).then((data) => {
@@ -158,6 +161,9 @@ export class PantryListService {
     this.load();
   }
 
+  /**
+    * Load the pantry list from the database
+    */
   load() {
     this.db.executeSql('SELECT * FROM pantry WHERE amount > 0', []).then((data) => {
       this.pantryList = [];
@@ -172,6 +178,11 @@ export class PantryListService {
     });
   }
 
+  /**
+   * Check database for existing items before adding
+   * if the item is present the amount will be incremented instead
+   * @param itemToAdd the item to be checked and added
+   * */
   public addItem(itemToAdd: Item): void {
 
     //TODO: Testing purposes, don't forget to remove
@@ -191,22 +202,11 @@ export class PantryListService {
     });
   }
 
-  checkUPC(upc: string): any {
-
-    this.db.executeSql('SELECT * FROM pantry WHERE upc = ? LIMIT 1', [upc]).then((data) => {
-      if (data.rows.length > 0) {
-        console.log('In DB');
-        new Item(JSON.parse(data.rows.item(0).info), data.rows.item(0).upc,
-          data.rows.item(0).amount, data.rows.item(0).id);
-      }
-      else {
-        new Item(0);
-      }
-    }, (err) => {
-      console.error('UPC check error: ', JSON.stringify(err));
-    });
-  }
-
+  /**
+   * Sets item amounts in database to the amount given
+   * @param item the Item to be updated
+   * @param amt the amount with which the item will be set
+   * */
   setAmount(item: Item, amt: number) {
     this.db.executeSql('UPDATE pantry SET amount = ? WHERE id = ?', [amt, item.id]).then((data) => {
       console.log('Updated item amount ', JSON.stringify(data));
@@ -216,6 +216,11 @@ export class PantryListService {
     });
   }
 
+  /**
+   * Updates an items amount based on that items current value
+   * item: the item to be updated
+   * dif: the amount to increment to decrement the item
+   * */
   updateAmount(item: Item, dif: number) {
     this.db.executeSql('UPDATE pantry SET amount = ? WHERE id = ?', [item.amount + dif, item.id]).then((data) => {
       console.log('Updated item amount ', JSON.stringify(data));
@@ -225,6 +230,9 @@ export class PantryListService {
     });
   }
 
+  /**
+   * Clear pantry list of all items by setting all item values to zero
+   * */
   clearPantry() {
     for (let i = 0; i < this.pantryList.length; i++) {
       this.setAmount(this.pantryList[i], 0);
@@ -232,6 +240,11 @@ export class PantryListService {
     this.load();
   }
 
+  /**
+   * Remove outdated items from the database
+   * Using the current datetime minus 1 month
+   * if an item was added before that time and the amount is 0 the item is removed
+   * */
   gCollect() {
     let d = new Date();
     d.setMonth(d.getMonth() - 1);
@@ -242,6 +255,9 @@ export class PantryListService {
     });
   }
 
+  /**
+   * Set an items favorite flag in the database
+   * */
   addFavorite(item: Item) {
     this.db.executeSql('UPDATE pantry SET is_fav = ? WHERE id = ?', [1, item.id]).then((data) => {
       console.log('Add favorite: ', JSON.stringify(data));
@@ -251,6 +267,9 @@ export class PantryListService {
     });
   }
 
+  /**
+   * Remove an items favorite flag from the database
+   * */
   rmFavorite(item: Item) {
     this.db.executeSql('UPDATE pantry SET is_fav = ? WHERE id = ?', [0, item.id]).then((data) => {
       console.log('Remove favorite: ', JSON.stringify(data));
@@ -260,6 +279,9 @@ export class PantryListService {
     });
   }
 
+  /**
+   *Return items recently set to zero amount in the database
+   * */
   getRecent() : any {
     let recentList = [];
     this.db.executeSql('SELECT * FROM pantry WHERE amount = 0', []).then((data) => {
