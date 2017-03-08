@@ -43,6 +43,17 @@ export class RecipeListService {
         this.itemList = pantryService.getPantryItems();
     }
 
+    /**
+     * Makes an http api call using headers and other relevant information
+     * to retrieve recipes based on products. 
+     * 
+     * @param {string} items products seperated by "," to search for
+     * @param {string} numRecipes number of recipes to generate
+     * @param {string} sort 1 to maximize used products, 2 to minimize unused
+     * @returns {Observable<any[]>} 
+     * 
+     * @memberOf RecipeListService
+     */
     recipeByIngredients(items: string, numRecipes: string, sort: string): Observable<any[]> {
         let ingrds = '?fillIngredients=true&ingredients=' + items;
         let numIngrds = '&limitLicense=false&number=' + numRecipes;
@@ -52,6 +63,14 @@ export class RecipeListService {
             + ingrds + numIngrds + rank, this.reqOps).map(res => <any[]>res.json())
     }
 
+    /**
+     * Uses search keys to make api call for related recipes.
+     * 
+     * @param {string} numRec number of recipes to generate
+     * @param {string} keywords search keys
+     * @returns {Observable<any>} 
+     * 
+     */
     recipeByName(numRec: string, keywords: string): Observable<any> {
         let ingrds = '?instructionsRequired=false&limitLicense=false';
         let numRecipes = '&number=' + numRec;
@@ -62,6 +81,13 @@ export class RecipeListService {
         + ingrds + numRecipes + offset + query, this.reqOps).map(res => <any>res.json());
     }
 
+    /**
+     * Retrieves recipe information from api for specified recipe.
+     * 
+     * @param {string} id recipe id 
+     * @returns {Observable<Recipe>} 
+     * 
+     */
     recipeID(id: string): Observable<Recipe> {
         let headers = new Headers();
         headers.append('X-Mashape-Key', apiKey);
@@ -78,7 +104,12 @@ export class RecipeListService {
             + recipe, reqOps).map(res => <Recipe>res.json())
     }
 
-    //Return an item list as a string of breadcrumbs for string literal search
+    /**
+     * Loops through pantry items to create ingredients string.
+     * 
+     * @returns {string} ingredients
+     * 
+     */
     getItemList(): string {
         //Reload the database before retrieving any updated pantry items
         this.pantryService.load();
@@ -94,7 +125,12 @@ export class RecipeListService {
         return this.items;
     }
 
-    //Refresh pantry list
+    /**
+     * Reload database and updates local pantry list.
+     * 
+     * @returns {any[]} pantry list
+     * 
+     */
     refresh():any[] {
         this.pantryService.load();
         return this.pantryService.getPantryItems();

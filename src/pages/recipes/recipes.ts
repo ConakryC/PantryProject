@@ -66,7 +66,7 @@ export class RecipesPage {
 
   /**
    * All recipe cards returned will be sorted before displayed.
-   * @param genRecipes recipes that are generated and unsorted
+   * @param {any} recipes that are generated and unsorted
    */
   sortByLikes(genRecipes: any) {
     this.recipes = genRecipes.sort((rec1, rec2) => {
@@ -188,7 +188,7 @@ export class RecipesPage {
 
   /**
    * Refreshes page when a user pulls down from the top of page
-   * @param refresher 
+   * @param {refresher} 
    */
   doRefresh(refresher) {
     console.log('Begin async operation', refresher);
@@ -201,6 +201,7 @@ export class RecipesPage {
 
   /**
   * To open a RecipeDetails page passing only recipe id as string.
+  * @param {string} recipeId to search for.
   */
   viewRecipeData(recipeId: string) {
     this.navCtrl.push(RecipeDetails, {

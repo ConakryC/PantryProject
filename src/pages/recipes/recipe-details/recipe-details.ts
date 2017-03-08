@@ -46,7 +46,7 @@ export class RecipeDetails {
 
   /**
    * Launches the recipe url using inAppBrowser if the recipe is not in api
-   * @param url string of url to be opened
+   * @param {string} url string of url to be opened
    */
   launchUrl(url: string) {
     //Check if ios, if so the inAppBrowser can only open in System browser

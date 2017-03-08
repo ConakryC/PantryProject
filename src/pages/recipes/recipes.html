@@ -25,6 +25,7 @@
 
   <ion-content padding *ngIf="numRecipes == 0">
       <h2>No recipes found!</h2>
+      <p>Add or edit panty items then swipe down to refresh.
   </ion-content>
 
   <ion-card tappable *ngFor="let recipe of recipes" (click)="viewRecipeData(recipe.id)">
