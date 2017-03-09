@@ -10,25 +10,34 @@
 </ion-header>
 
 <ion-content padding>
-    <h2>{{ user.details.name }}</h2>
+  <h2>{{ user.details.name }}</h2>
 
-<div class="list">
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Diet Restrictions
-    </div>
-    <select>
-      <option selected>None</option>
-      <option>Vegetarian</option>
-      <option>Vegan</option>
-      <option>Gluten Free</option>
-      <option>Dairy Free</option>
-      <option>Peanut Free</option>
-    </select>
+  <ion-list>
+    <ion-item>
+      <ion-label>
+        Diet Restrictions
+      </ion-label>
+      <ion-select>
+        <ion-option selected>None</ion-option>
+        <ion-option>Vegetarian</ion-option>
+        <ion-option>Vegan</ion-option>
+        <ion-option>Gluten Free</ion-option>
+        <ion-option>Dairy Free</ion-option>
+        <ion-option>Peanut Free</ion-option>
+      </ion-select>
+    </ion-item>
 
+    <button ion-item (click)="getJoke()">
+        Food Joke
+    </button>
+    <p text-wrap>{{foodJoke}}</p>
 
-  </label>
-</div>
+    <button ion-item (click)="getTrivia()">
+        Food Trivia
+    </button>
+    <p text-wrap>{{foodTrivia}}</p>
+
+  </ion-list>
 
 
 </ion-content>
