@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Welcome</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="exit"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <h2>{{ user.details.name }}</h2>
+
+<div class="list">
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Diet Restrictions
+    </div>
+    <select>
+      <option selected>None</option>
+      <option>Vegetarian</option>
+      <option>Vegan</option>
+      <option>Gluten Free</option>
+      <option>Dairy Free</option>
+      <option>Peanut Free</option>
+    </select>
+
+
+  </label>
+</div>
+
+
+</ion-content>
