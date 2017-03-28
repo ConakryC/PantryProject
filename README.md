@@ -1,4 +1,4 @@
-# PantryProject
+# Pocket Pantry
 Mobile application for tracking pantry items and suggesting recipes.
 
 # Cloning
